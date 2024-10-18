@@ -132,6 +132,7 @@ div.container>div.hero-section-col:last-child {
 .modal-auth-overlay.fadeIn {
     animation: fadeIn 0.3s ease-in-out 0s 1 normal forwards;
 }
+
 .auth-form {
     z-index: 1000;
     position: relative;
@@ -308,12 +309,14 @@ label.remember-me-label {
     flex-basis: 100%;
     height: 100%;
 }
+
 .main-container {
     margin-top: 24px;
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
+
 .dashboard-main {
     padding: 0px 24px;
     height: 100%;
@@ -322,6 +325,7 @@ label.remember-me-label {
     flex-direction: column;
     gap: 15px;
 }
+
 .dashboard-zero-files {
     height: 100%;
     display: flex;
@@ -342,6 +346,7 @@ label.remember-me-label {
     background-color: rgba(0, 0, 0, 0.4);
     opacity: 1;
 }
+
 .import-file-modal-container {
     z-index: 1001;
     background-color: #2D2D2D;
@@ -386,30 +391,35 @@ label.remember-me-label {
     border: none;
     border-radius: 15px;
 }
+
 .search-and-import {
     display: flex;
     justify-content: space-between;
 }
+
 .search-box-container {
     position: relative;
     display: flex;
     align-items: center;
     max-width: 350px;
 }
+
 .search-box {
     background-color: #2d2d2d;
     color: #909090;
     border: none;
-    padding: 15px 15px 15px 50px; 
+    padding: 15px 15px 15px 50px;
     border-radius: 40px;
     width: 100%;
     font-size: 16px;
 }
+
 .search-box-icon {
     position: absolute;
     left: 15px;
     pointer-events: none;
 }
+
 .import.btn-primary.rounded {
     display: flex;
     justify-content: center;
@@ -418,15 +428,17 @@ label.remember-me-label {
     border-radius: 50%;
     color: #ffffff;
 }
+
 /* dashboard files/documents grid */
 .dashboard-all-uploaded-files {
     display: grid;
     grid-template-columns: repeat(1fr);
     grid-gap: 10px;
-    max-height: 100vh; 
+    max-height: 100vh;
     overflow-y: auto;
     margin-top: 30px;
 }
+
 .book {
     text-align: center;
     border: 1px solid #2d2d2d;
@@ -435,14 +447,17 @@ label.remember-me-label {
     border-radius: 40px;
     display: flex;
 }
+
 .book svg {
     width: 2.5em;
     height: 2.5em;
 }
+
 .book:hover {
     background-color: #2d2d2d;
     cursor: pointer;
 }
+
 .file-title-and-info {
     display: flex;
     flex-direction: column;
@@ -547,9 +562,11 @@ label.remember-me-label {
     gap: 15px;
     overflow-y: auto;
 }
+
 .note-span-two {
     grid-column: span 2;
 }
+
 .note-card {
     min-width: 150px;
     max-width: 200px;
@@ -558,30 +575,37 @@ label.remember-me-label {
     display: flex;
     flex-direction: column;
     gap: 14px;
+    cursor: pointer;
 }
+
 .note-card p {
     color: #000000 !important;
 }
+
 .green {
     background-color: #C3FF45;
     border-radius: 40px;
-    border-top-left-radius: 0px;    
+    border-top-left-radius: 0px;
 }
+
 .blue {
     background-color: #ADECFF;
     border-radius: 40px;
-    border-bottom-right-radius: 0px; 
+    border-bottom-right-radius: 0px;
 }
+
 .orange {
     background-color: #FFBB3D;
     border-radius: 40px;
-    border-top-left-radius: 0px;    
+    border-top-left-radius: 0px;
 }
+
 .purple {
     background-color: #CCB2FB;
     border-radius: 40px;
-    border-bottom-right-radius: 0px; 
+    border-bottom-right-radius: 0px;
 }
+
 .cream {
     background-color: #F5EBC7;
 }
@@ -591,13 +615,17 @@ label.remember-me-label {
 .note-container {
     margin-top: 24px;
 }
+
 .note-header {
     display: flex;
     gap: 32px;
 }
-.note-container h1, p {
+
+.note-container h1,
+p {
     color: #000000;
 }
+
 .btnBack {
     background-color: #DDD4B3;
     color: #000000;
@@ -605,9 +633,85 @@ label.remember-me-label {
     border: none;
     padding: 10px;
 }
+
 .btnBack:hover {
     cursor: pointer;
 }
+
+.note-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.note-header {
+    display: flex;
+    align-items: center;
+}
+
+.note-title {
+    font-size: 1.5em;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.saveNoteBtn,
+.drawingBtn,
+.eraserBtn,
+.clear-drawings {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.saveNoteBtn.active,
+.drawingBtn.active,
+.eraserBtn.active,
+.clear-drawings.active {
+    background-color: #00000011;
+    border: 1px solid #00000011;
+}
+.saveNoteBtn,
+.drawingBtn,
+.eraserBtn,
+.clear-drawings svg {
+    width: 3.75em;
+    height: 3.75em;
+}
+
+.note-editor-container {
+    position: relative;
+    min-height: 70vh;
+    padding: 15px;
+}
+
+.rich-text-editor {
+    min-height: 300px;
+}
+
+.canvas-controls {
+    margin-top: 10px;
+}
+
+.note-editor-toolbar-custom {
+    position: absolute;
+    bottom: -10%;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    min-width: 100%;
+    height: fit-content;
+    background-color: #f5ebc754;
+    backdrop-filter: blur(40px);
+    border-top: #909090 solid 1px;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* animations */
 @keyframes fadeIn {
     from {
@@ -703,15 +807,18 @@ label.remember-me-label {
     .dashboard-all-uploaded-files {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
+
     .book {
         flex-direction: column;
         max-width: 100px;
         border-radius: 15px;
         align-items: center;
     }
+
     .file-title-and-info {
         align-items: center;
     }
+
     .file-info {
         justify-content: space-between;
         align-items: space-between;
@@ -720,6 +827,7 @@ label.remember-me-label {
 }
 
 @media screen and (min-width: 768px) {
+
     html,
     body {
         overflow: hidden;
@@ -758,9 +866,11 @@ label.remember-me-label {
     .container {
         padding: 0px;
     }
+
     .main-container {
         margin-top: 67px;
     }
+
     .dashboard-menu {
         flex-basis: 25%;
         border-right: 1px solid #2D2D2D;
@@ -806,10 +916,12 @@ label.remember-me-label {
         display: flex;
         height: 100%;
     }
+
     .import-file-modal-overlay {
         align-items: center;
         justify-content: center;
     }
+
     .import-file-modal-container {
         position: static;
         width: fit-content;
@@ -817,15 +929,22 @@ label.remember-me-label {
         border-radius: 15px;
         animation: fadeIn 0.3s ease-in-out;
     }
-    .import-file-modal { 
+
+    .import-file-modal {
         padding: 40px 100px;
         margin: 80px 100px;
     }
 
     /* note workplace style */
 
-    .note-container { 
+    .note-container {
         margin-top: 56px;
+    }
+    .note-editor-toolbar-custom {
+        min-width: auto;
+        max-width: 50%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 
@@ -894,22 +1013,28 @@ label.remember-me-label {
     .dashboard-menu-container img {
         padding-left: 40px;
     }
+
     .nav-container {
         margin-left: 56px;
     }
+
     .user-avatar-and-name {
         padding-left: 56px;
     }
+
     .dashboard-main {
         padding-right: 56px;
         padding-left: 56px;
     }
+
     .dashboard-all-uploaded-files {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
+
     .book {
         max-width: 150px;
     }
+
     .book svg {
         width: 3.75em;
         height: 3.75em;
