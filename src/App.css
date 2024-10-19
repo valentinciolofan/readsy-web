@@ -321,7 +321,7 @@ label.remember-me-label {
     padding: 0px 24px;
     height: 100%;
     display: flex;
-    overflow: hidden;
+    overflow-x: hidden;
     flex-direction: column;
     gap: 15px;
 }
@@ -666,6 +666,7 @@ p {
     border: none;
     cursor: pointer;
 }
+
 .saveNoteBtn.active,
 .drawingBtn.active,
 .eraserBtn.active,
@@ -673,6 +674,7 @@ p {
     background-color: #00000011;
     border: 1px solid #00000011;
 }
+
 .saveNoteBtn,
 .drawingBtn,
 .eraserBtn,
@@ -712,6 +714,123 @@ p {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+
+
+
+
+
+/* ##### PROFILE COMPONENT */
+.user-info-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: column;
+    gap: 40px;
+    align-items: center;
+    max-width: 100%;
+    border: 1px solid #2d2d2d;
+    border-radius: 15px;
+    padding: 60px 36px;
+    max-width: 600px;
+}
+
+.user-info-col-1 {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    border-radius: 15px;
+    gap: 40px;
+    min-width: 100%;
+}
+
+.user-avatar {
+    border-radius: 15px;
+    border: 1px solid #2d2d2d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 10px;
+    flex-basis: 50%;
+    padding: 30px 0px;
+}
+
+.user-avatar svg {
+    padding: 10px;
+    border: 1px solid #2d2d2d;
+    border-radius: 50%;
+    color: #909090;
+    background-color: #2d2d2d;
+}
+
+.user-information {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    border: 1px solid #2d2d2d;
+    border-radius: 15px;
+    padding: 26px 13px;
+    flex-basis: 50%;
+}
+
+.user-information span {
+    color: #909090;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-information span p {
+    white-space: nowrap;
+}
+
+.btnLogOut {
+    min-width: 100%;
+    background-color: transparent;
+    color: #CF2525;
+    border: 1px solid #2d2d2d;
+    padding: 15px 0px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 15px;
+}
+
+.btnLogOut:hover {
+    background-color: #2d2d2d;
+}
+
+/* PDF viewer style */
+
+.pdf-container {
+    margin-top: 67px;
+    overflow-y: scroll; 
+    height: auto;
+    width: fit-content;
+}
+.react-pdf__Document {
+
+}
+.react-pdf__Page {
+    margin-bottom: 20px;
+}
+.react-pdf__Page__canvas {
+    width: 100%;
+    height: auto;
+}
+.pdf-controls {
+    margin-bottom: 20px;
+  }
+  
+  .pdf-controls button {
+    padding: 10px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
 /* animations */
 @keyframes fadeIn {
     from {
@@ -882,7 +1001,6 @@ p {
 
     .container aside {
         flex-basis: 25%;
-        display: none;
     }
 
     .dashboard-menu-container img {
@@ -940,11 +1058,19 @@ p {
     .note-container {
         margin-top: 56px;
     }
+
     .note-editor-toolbar-custom {
         min-width: auto;
         max-width: 50%;
         left: 50%;
         transform: translateX(-50%);
+    }
+    /* profile styling */
+    .user-info-col-1 {
+        flex-direction: row;
+    }
+    .user-avatar {
+        padding: 0px;
     }
 }
 
@@ -1039,4 +1165,11 @@ p {
         width: 3.75em;
         height: 3.75em;
     }
+
+    /* profile desktop styling */
+    .user-info-card {
+        min-width: 600px;
+        align-self: center;
+    }
+
 }

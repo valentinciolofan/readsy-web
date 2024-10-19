@@ -4,9 +4,12 @@ import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './routes/PrivateRoute';
 import Home from './components/Home';
+import Profile from './components/Profile'
 import Notes from './components/Notes';
 import Note from './components/Note';
 import './App.css';
+import PdfViewer from './components/PdfViewer';
+
 
 const App = () => {
   return (
@@ -30,9 +33,12 @@ const App = () => {
             <Route path="notes" element={<Notes />} />
             <Route path="notes/note/:id" element={<Note />} />
 
-            {/* <Route path="profile" element={<Profile />} /> */}
+            <Route path="profile" element={<Profile />} />
             {/* <Route path="settings" element={<Settings />} /> */}
             {/* <Route path="chat" element={<Chat />} /> */}
+            <Route path="readpdf" element={<PdfViewer />} />
+            
+
           </Route>
         </Routes>
       </Router>

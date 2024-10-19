@@ -1,45 +1,50 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
-import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.js';
+import React, { useState } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; // Import for annotations and text layer
+import 'react-pdf/dist/esm/Page/TextLayer.css'; // Import for text layer
 
-GlobalWorkerOptions.workerSrc = pdfWorker;
+// Set the workerSrc to a valid URL
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PdfViewer = ({ pdfUrl }) => {
-  const canvasRef = useRef(null);
-  const [error, setError] = useState(null);
+const PdfViewer = () => {
+  const [numPages, setNumPages] = useState(null);
+  const [scale, setScale] = useState(1.0); // State to manage zoom level
 
-  useEffect(() => {
-    const loadPdf = async () => {
-      try {
-        const pdf = await getDocument(pdfUrl).promise;
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 1.5 });
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
 
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+  const zoomIn = () => {
+    setScale(scale + 0.2); // Increase scale by 0.2
+  };
 
-        const renderContext = {
-          canvasContext: context,
-          viewport,
-        };
-        page.render(renderContext);
-      } catch (err) {
-        setError('Failed to load PDF.');
-        console.error('Error loading PDF:', err);
-      }
-    };
-
-    if (pdfUrl) {
-      loadPdf();
-    }
-  }, [pdfUrl]);
+  const zoomOut = () => {
+    if (scale > 0.6) setScale(scale - 0.2); // Decrease scale by 0.2 but keep it above a minimum value
+  };
 
   return (
-    <div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <canvas ref={canvasRef}></canvas>
+    <div className="pdf-container">
+      <div className="pdf-controls">
+        <button onClick={zoomOut}>Zoom Out</button>
+        <button onClick={zoomIn}>Zoom In</button>
+      </div>
+
+      <Document
+        file="/1.pdf"  
+        onLoadSuccess={onDocumentLoadSuccess}
+        className="react-pdf__Document"
+      >
+        {Array.from(new Array(numPages), (el, index) => (
+          <Page 
+            key={`page_${index + 1}`} 
+            pageNumber={index + 1} 
+            className="react-pdf__Page" 
+            renderTextLayer={true}  
+            renderAnnotationLayer={true} 
+            scale={2.6} // Pass scale to adjust the zoom level
+          />
+        ))}
+      </Document>
     </div>
   );
 };

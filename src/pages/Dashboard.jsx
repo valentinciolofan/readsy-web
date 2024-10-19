@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import Home from '../components/Home'
 import Menu from '../components/Menu';
-import Notes from '../components/Notes';
+import ReadsyPartner from '../components/ReadsyPartner';
 import { db } from '../firebase/firebaseConfig';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
@@ -14,9 +12,6 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [noteIsOpen, setNoteIsOpen] = useState(false);
-
-
-
 
   const handleNoteIsOpen = () => {
     setNoteIsOpen(true);
@@ -67,7 +62,7 @@ const Dashboard = () => {
         <Outlet />
       </main>
       <aside className='ai-assistant'>
-        <p>GPT here</p>
+        <ReadsyPartner />
       </aside>
     </div>
   );
