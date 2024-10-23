@@ -805,6 +805,10 @@ p {
 /* PDF viewer style */
 .pdf-viewer {
 }
+.highlight {
+    background-color: yellow;
+    opacity: 0.5;
+}
 .pdf-pages-container {
     display: flex;
     flex-direction: column;

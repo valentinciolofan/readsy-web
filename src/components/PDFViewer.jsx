@@ -118,11 +118,63 @@ const PdfViewer = () => {
     renderPages(totalPages);
     console.log('down')
   }
+  // Get and add event listener to every span from textLayer
+  const addEventListenersToSpans = () => {
+    const allSpans = document.querySelectorAll('.textLayer span');
+
+    allSpans.forEach(span => {
+      span.addEventListener('click', () => {
+        let element = span;
+        let nextElement = span.nextSibling;
+        let foundEnd = false;
+        const arr = [span]; // Store the clicked span initially
+    
+        // If the span contains only whitespace, alert the user and stop
+        if (span.innerHTML.trim() === "") {
+          return alert('Make sure you click a word');
+        }
+    
+        // Loop through the next siblings
+        while (nextElement && !foundEnd) {
+          // Check if the next sibling is a span element
+          if (nextElement.nodeType === 1 && nextElement.nodeName.toLowerCase() === 'span') {
+            // If the next span contains whitespace, stop
+            if (nextElement.innerHTML.trim() === "") {
+              foundEnd = true;
+              break;
+            }
+    
+            // Add the span to the array if it has a part of the word
+            arr.push(nextElement);
+            nextElement = nextElement.nextSibling;
+          } else {
+            // If it's not a span, move to the next sibling
+            nextElement = nextElement.nextSibling;
+          }
+        }
+    
+        speak(arr);
+      });
+    });
+    
+    const speak = (elements) => {
+      const text = elements.map(element => {
+        element.classList.add('highlight');
+        return element.innerHTML;
+      })
+                    .join(' ')
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+};
 
   return (
     <div className="pdf-viewer">
       <button type="button" onClick={handleZoomIn}>Zoom In</button>
       <button type="button" onClick={handleZoomOut}>Zoom Out</button>
+      <button type="button" onClick={addEventListenersToSpans}>Read Aloud</button>
+
       <div ref={pagesContainerRef} className="pdf-pages-container"></div>
     </div>
   );
