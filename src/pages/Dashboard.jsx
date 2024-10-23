@@ -61,9 +61,7 @@ const Dashboard = () => {
       <main className={`dashboard-main ${noteIsOpen ? 'cream' : ''}`}>
         <Outlet />
       </main>
-      <aside className='ai-assistant'>
         <ReadsyPartner />
-      </aside>
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import { ReactSketchCanvas } from 'react-sketch-canvas';
-import 'react-quill/dist/quill.bubble.css';
+// import ReactQuill from 'react-quill';
+// import { ReactSketchCanvas } from 'react-sketch-canvas';
+// import 'react-quill/dist/quill.bubble.css';
 import debounce from 'lodash.debounce';
 
 const Note = () => {

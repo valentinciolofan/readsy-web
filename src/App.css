@@ -318,7 +318,6 @@ label.remember-me-label {
 }
 
 .dashboard-main {
-    padding: 0px 24px;
     height: 100%;
     display: flex;
     overflow-x: hidden;
@@ -804,33 +803,116 @@ p {
 }
 
 /* PDF viewer style */
+.pdf-viewer {
+}
+.pdf-pages-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.pdf-loader {
+   width: fit-content;
+   position: relative;
+   margin-bottom: 20px;
+}
+.textLayer {
+    left: 0 !important;
+}
 
-.pdf-container {
-    margin-top: 67px;
-    overflow-y: scroll; 
-    height: auto;
-    width: fit-content;
-}
-.react-pdf__Document {
 
+/* ### READSY READING PARTNER ### */
+.readsy-gpt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 12px;
+    border-left: 1px solid #2d2d2d;
 }
-.react-pdf__Page {
-    margin-bottom: 20px;
+
+.toggleReadsy {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
 }
-.react-pdf__Page__canvas {
-    width: 100%;
-    height: auto;
+
+.readsy-conversation {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 40px;
+    min-width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    padding-bottom: 40px;
 }
-.pdf-controls {
-    margin-bottom: 20px;
-  }
-  
-  .pdf-controls button {
+
+.readsy-avatar-and-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 40px;
+}
+
+.readsy-avatar-and-name img {
+    padding: 0px 0px;
+    background-color: #4CD6FF;
+    border-radius: 50%;
+}
+
+.toggleBtn.readsy {
+    align-self: flex-start;
+    transform: rotate(180deg);
+    margin-top: 12px;
+}
+
+.readsy-input-box-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 100%;
+}
+
+.readsy-message {
+    background-color: #2d2d2d;
     padding: 10px;
-    margin: 0 10px;
+    width: fit-content;
+    border-radius: 15px;
+    display: flex;
+    justify-content: flex-start;
+    max-width: 70%;
+    height: auto;
+    margin-left: 15px;
+}
+
+.user-message-to-readsy {
+    background-color: #2d2d2d;
+    padding: 10px;
+    width: fit-content;
+    border-radius: 15px;
+    align-self: flex-end;
+    margin-right: 15px;
+    max-width: 70%;
+}
+
+.readsy-input-box {
+    background-color: #2d2d2d;
+    color: #909090;
+    border: none;
+    padding: 15px 45px 15px 15px;
+    border-radius: 40px;
     font-size: 16px;
+    min-width: 100%;
+}
+
+.readsy-input-box-icon {
+    position: absolute;
+    right: 15px;
+    color: #909090;
     cursor: pointer;
-  }
+}
+
+
 /* animations */
 @keyframes fadeIn {
     from {
@@ -1065,10 +1147,12 @@ p {
         left: 50%;
         transform: translateX(-50%);
     }
+
     /* profile styling */
     .user-info-col-1 {
         flex-direction: row;
     }
+
     .user-avatar {
         padding: 0px;
     }
@@ -1145,11 +1229,6 @@ p {
     }
 
     .user-avatar-and-name {
-        padding-left: 56px;
-    }
-
-    .dashboard-main {
-        padding-right: 56px;
         padding-left: 56px;
     }
 

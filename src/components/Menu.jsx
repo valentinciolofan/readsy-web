@@ -29,7 +29,7 @@ const Menu = () => {
             <div className="dashboard-menu-container">
                 <button onClick={handleToggleNavbar} type="button" className="toggleBtn"
                     style={{ visibility: isHovered ? 'visible' : 'hidden' }}><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M24 36L12 24l12-12m12 24L24 24l12-12"></path></svg></button>
-                <img src="src/assets/images/logo-white.svg" alt="Readsy Logo" />
+                <img src="/src/assets/images/logo-white.svg" alt="Readsy Logo" />
                 <nav className='navigation-menu'>
                     <div className="nav-container">
                         <button className={`nav-link ${isActive('/dashboard')}`} onClick={() => handleNavigation('/dashboard')} ><svg xmlns="http://www.w3.org/2000/svg" width="2.5em" height="2.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M4 21V9l8-6l8 6v12h-6v-7h-4v7z" /></svg>Home</button>
