@@ -6,11 +6,38 @@ PDFJS.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.7.76/build
 const pdfUrl = '/1.pdf';
 
 const PdfViewer = () => {
-  const canvasRef = useRef(null);
   const pagesContainerRef = useRef(null);
   const [pdfDoc, setPdfDoc] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [scalePdf, setScalePdf] = useState(1);
+  const [pdfText, setPdfText] = useState('');
+  const [readAloud, setReadAloud] = useState(false);
+  const [voices, setVoices] = useState([]);
+  const [selectedVoice, setSelectedVoice] = useState(null);
+  const [pageIndex, setPageIndex] = useState(null);
+
+  // Load voices on component mount
+  useEffect(() => {
+    const loadVoices = () => {
+      let synth = window.speechSynthesis;
+      let voicesList = synth.getVoices();
+
+      if (voicesList.length > 0) {
+        setVoices(voicesList);
+        setSelectedVoice(voicesList[0]); // Default to the first voice
+      } else {
+        synth.onvoiceschanged = () => {
+          voicesList = synth.getVoices();
+          setVoices(voicesList);
+          setSelectedVoice(voicesList[0]); // Default to the first voice
+        };
+      }
+    };
+
+    loadVoices();
+  }, []);
+
+
 
   useEffect(() => {
     // Setting loading state untill the pdf is loaded.
@@ -31,9 +58,16 @@ const PdfViewer = () => {
     loadPDF(pdfUrl);
   }, [pdfUrl]);
 
+
+
+
   const renderPages = async (pagesNr) => {
     // Get the container where the canvas and text layer will render
     const pagesContainer = pagesContainerRef.current;
+
+    // Store full text of the pdf document.
+    let fullText = [];
+
     // Iterate through the number of pages and render them.
     for (let i = 1; i <= pagesNr; i++) {
       const pdfLoader = document.createElement('div');
@@ -70,7 +104,11 @@ const PdfViewer = () => {
         // Get text contents of the page after the pdf has been rendered in the canvas.
         const textContent = await page.getTextContent();
 
+        // Render textContent as a layer.
         await renderTextLayer(textContent, viewport);
+
+        // Push page text items to full text array
+        textContent.items.map(item => fullText.push(item.str));
 
       }
       const renderTextLayer = async (textContent, viewport) => {
@@ -97,6 +135,13 @@ const PdfViewer = () => {
       }
       await renderPage(i);
     }
+    // Set the full text.
+    let extractedText = fullText.join(' ');
+    extractedText = extractedText
+      .replace(/\s+/g, ' ')        // Replace multiple spaces with a single space
+      .replace(/\n+/g, '\n')       // Remove multiple consecutive newlines
+      .trim();
+    setPdfText(extractedText);
   }
 
   // After pdf is loaded, set loading to false 
@@ -123,57 +168,116 @@ const PdfViewer = () => {
     const allSpans = document.querySelectorAll('.textLayer span');
 
     allSpans.forEach(span => {
-      span.addEventListener('click', () => {
-        let element = span;
-        let nextElement = span.nextSibling;
-        let foundEnd = false;
-        const arr = [span]; // Store the clicked span initially
-    
-        // If the span contains only whitespace, alert the user and stop
-        if (span.innerHTML.trim() === "") {
-          return alert('Make sure you click a word');
-        }
-    
-        // Loop through the next siblings
-        while (nextElement && !foundEnd) {
-          // Check if the next sibling is a span element
-          if (nextElement.nodeType === 1 && nextElement.nodeName.toLowerCase() === 'span') {
-            // If the next span contains whitespace, stop
-            if (nextElement.innerHTML.trim() === "") {
-              foundEnd = true;
-              break;
-            }
-    
-            // Add the span to the array if it has a part of the word
-            arr.push(nextElement);
-            nextElement = nextElement.nextSibling;
-          } else {
-            // If it's not a span, move to the next sibling
-            nextElement = nextElement.nextSibling;
-          }
-        }
-    
-        speak(arr);
-      });
+      span.addEventListener('click', () => read(span))
     });
-    
-    const speak = (elements) => {
-      const text = elements.map(element => {
-        element.classList.add('highlight');
-        return element.innerHTML;
-      })
-                    .join(' ')
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      window.speechSynthesis.speak(utterance);
+
+  };
+  const startSpeaking = (text) => {
+    if (!text) {
+      console.error("No text provided to speak.");
+      return;
     }
-};
+  
+    const utterance = new SpeechSynthesisUtterance(text);
+  
+    // Set the selected voice
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+    }
+  
+    // Event listeners for logging and debugging
+    utterance.onstart = () => {
+      console.log("Speech started.");
+    };
+  
+    utterance.onend = () => {
+      console.log("Speech ended.");
+    };
+  
+    utterance.onerror = (event) => {
+      console.error("Speech synthesis encountered an error:", event.error);
+    };
+  
+    utterance.onpause = () => {
+      console.log("Speech paused.");
+    };
+  
+    utterance.onresume = () => {
+      console.log("Speech resumed.");
+    };
+  
+    utterance.onmark = (event) => {
+      console.log(`Speech reached mark: ${event.name}`);
+    };
+  
+    utterance.onboundary = (event) => {
+      console.log(`Speech reached boundary at character ${event.charIndex}`);
+    };
+  
+    // Start speaking
+    try {
+      window.speechSynthesis.speak(utterance);
+    } catch (error) {
+      console.error("Error occurred while starting speech synthesis:", error);
+    }
+  };
+  
+
+  // Handle voice change
+  const handleVoiceChange = (e) => {
+    const voiceIndex = e.target.value;
+    setSelectedVoice(voices[voiceIndex]);
+  };
+
+  const handleReadAloud = () => {
+    startSpeaking(pdfText);
+
+  };
+
+  // Define the keydown handler as a separate function
+  const handleKeyDown = (event, value) => {
+    if (event.keyCode === 13) { // 'Enter' key
+      window.location.href = `#${value}`;
+    }
+  };
+
+  // Handle page search index
+  const handlePageIndex = (e) => {
+    const value = e.target.value;
+    setPageIndex(value);
+
+    // Attach the keydown event listener
+    const keyDownHandler = (event) => handleKeyDown(event, value);
+    document.addEventListener('keydown', keyDownHandler);
+
+    // Clean up: remove the event listener to avoid multiple listeners being added
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+    };
+  };
 
   return (
     <div className="pdf-viewer">
       <button type="button" onClick={handleZoomIn}>Zoom In</button>
       <button type="button" onClick={handleZoomOut}>Zoom Out</button>
-      <button type="button" onClick={addEventListenersToSpans}>Read Aloud</button>
+      {/* Dropdown for selecting voice */}
+      <select onChange={handleVoiceChange}>
+        {voices.map((voice, index) => (
+          <option key={index} value={index}>
+            {voice.name} ({voice.lang})
+          </option>
+        ))}
+      </select>
+
+
+      <button type="button" onClick={handleReadAloud}>
+        Read Aloud
+      </button>
+
+      <label htmlFor="pageJump">Jump to a page</label>
+      <input type="number" name="pageJump" placeholder="Search for a page" onChange={handlePageIndex}/>
+      <a href={`#${pageIndex ? pageIndex : ''}`}>Jump</a>
 
       <div ref={pagesContainerRef} className="pdf-pages-container"></div>
     </div>
@@ -181,3 +285,5 @@ const PdfViewer = () => {
 };
 
 export default PdfViewer;
+
+
