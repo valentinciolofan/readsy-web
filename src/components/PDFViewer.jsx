@@ -12,6 +12,7 @@ const PdfViewer = () => {
   const [scalePdf, setScalePdf] = useState(1);
   const [pdfText, setPdfText] = useState('');
   const [readAloud, setReadAloud] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [pageIndex, setPageIndex] = useState(null);
@@ -178,43 +179,43 @@ const PdfViewer = () => {
       console.error("No text provided to speak.");
       return;
     }
-  
+
     const utterance = new SpeechSynthesisUtterance(text);
-  
+    console.log(utterance)
     // Set the selected voice
     if (selectedVoice) {
       utterance.voice = selectedVoice;
     }
-  
+
     // Event listeners for logging and debugging
     utterance.onstart = () => {
       console.log("Speech started.");
     };
-  
+
     utterance.onend = () => {
       console.log("Speech ended.");
     };
-  
+
     utterance.onerror = (event) => {
       console.error("Speech synthesis encountered an error:", event.error);
     };
-  
+
     utterance.onpause = () => {
       console.log("Speech paused.");
     };
-  
+
     utterance.onresume = () => {
       console.log("Speech resumed.");
     };
-  
+
     utterance.onmark = (event) => {
       console.log(`Speech reached mark: ${event.name}`);
     };
-  
+
     utterance.onboundary = (event) => {
       console.log(`Speech reached boundary at character ${event.charIndex}`);
     };
-  
+
     // Start speaking
     try {
       window.speechSynthesis.speak(utterance);
@@ -222,7 +223,7 @@ const PdfViewer = () => {
       console.error("Error occurred while starting speech synthesis:", error);
     }
   };
-  
+
 
   // Handle voice change
   const handleVoiceChange = (e) => {
@@ -230,15 +231,44 @@ const PdfViewer = () => {
     setSelectedVoice(voices[voiceIndex]);
   };
 
+  // Handle Read Aloud Mode
   const handleReadAloud = () => {
-    startSpeaking(pdfText);
+    if (readAloud) {
+      window.speechSynthesis.cancel();
+      setReadAloud(!readAloud);
+    } else {
+      startSpeaking(pdfText);
+      setReadAloud(!readAloud);
+    }
 
+  };
+
+  // Handle pause.
+  const handlePause = () => {
+    if (isPaused) {
+      window.speechSynthesis.resume();
+      setIsPaused(!isPaused);
+      console.log(isPaused);
+    } else {
+      window.speechSynthesis.pause();
+      setIsPaused(!isPaused);
+      console.log(isPaused);
+    }
+
+  }
+
+  // This function will scroll smoothly to the target element
+  const scrollToPage = (index) => {
+    const target = document.getElementById(index);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   // Define the keydown handler as a separate function
   const handleKeyDown = (event, value) => {
     if (event.keyCode === 13) { // 'Enter' key
-      window.location.href = `#${value}`;
+      scrollToPage(value);
     }
   };
 
@@ -272,12 +302,16 @@ const PdfViewer = () => {
 
 
       <button type="button" onClick={handleReadAloud}>
-        Read Aloud
+        {readAloud ? 'Stop' : 'Read Aloud'}
+      </button>
+      <button type="button" onClick={handlePause}>
+        {isPaused ? 'Resume' : 'Pause'}
       </button>
 
+
       <label htmlFor="pageJump">Jump to a page</label>
-      <input type="number" name="pageJump" placeholder="Search for a page" onChange={handlePageIndex}/>
-      <a href={`#${pageIndex ? pageIndex : ''}`}>Jump</a>
+      <input type="number" name="pageJump" placeholder="Search for a page" onChange={handlePageIndex} />
+      <button type="button" onClick={() => scrollToPage(pageIndex)} className="btnJumpToIndex">Jump</button>
 
       <div ref={pagesContainerRef} className="pdf-pages-container"></div>
     </div>

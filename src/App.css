@@ -813,6 +813,7 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
+    scroll-behavior: smooth;
 }
 .pdf-loader {
    width: fit-content;
@@ -822,7 +823,10 @@ p {
 .textLayer {
     left: 0 !important;
 }
-
+.btnJumpToIndex {
+    background-color: red;
+    color: #ffffff;
+}
 
 /* ### READSY READING PARTNER ### */
 .readsy-gpt {
