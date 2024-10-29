@@ -803,26 +803,30 @@ p {
 }
 
 /* PDF viewer style */
-.pdf-viewer {
-}
+.pdf-viewer {}
+
 .highlight {
     background-color: yellow;
     opacity: 0.5;
 }
+
 .pdf-pages-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     scroll-behavior: smooth;
 }
+
 .pdf-loader {
-   width: fit-content;
-   position: relative;
-   margin-bottom: 20px;
+    width: fit-content;
+    position: relative;
+    margin-bottom: 20px;
 }
+
 .textLayer {
     left: 0 !important;
 }
+
 .btnJumpToIndex {
     background-color: red;
     color: #ffffff;
@@ -835,6 +839,8 @@ p {
     align-items: center;
     padding: 0px 12px;
     border-left: 1px solid #2d2d2d;
+    transform: translateX(0%);
+    transition: transform 0.3s ease-in;
 }
 
 .toggleReadsy {
@@ -842,16 +848,21 @@ p {
     transition: transform 0.3s ease-out;
 }
 
+.readsy-conversation-container {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
+    height: 100%;
+    padding-bottom: 40px;
+}
+
 .readsy-conversation {
-    margin-top: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     gap: 40px;
     min-width: 100%;
-    height: 100%;
-    overflow-y: scroll;
-    padding-bottom: 40px;
+    min-height: 100%;
 }
 
 .readsy-avatar-and-name {

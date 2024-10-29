@@ -24,3 +24,6 @@ src/firebase/firebaseConfig.js
 *.njsproj
 *.sln
 *.sw?
+
+# Local Netlify folder
+.netlify
