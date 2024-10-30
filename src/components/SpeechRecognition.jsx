@@ -25,7 +25,7 @@ const useCommandRecognition = (onCommandDetected) => {
             console.log("Heard command:", transcript);
 
             // Check for the specific command
-            if (transcript === "stop") {
+            if (transcript.includes("stop")) {
                 onCommandDetected("stop"); // Trigger the stop function
                 recognition.stop(); // Stop recognition to avoid looping
             } else if (transcript.includes("hello read")) {

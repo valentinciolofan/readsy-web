@@ -1,16 +1,19 @@
-import { SET_PDF_TEXT } from "./action";
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-    pdfText: "",
-};
+const pdfSlice = createSlice({
+    name: 'pdf',
+    initialState: {
+        pdfText: "", // Initialize pdfText to an empty string
+    },
+    reducers: {
+        _setPdfText(state, action) {
+            state.pdfText = action.payload; // Directly set pdfText from action payload
+        },
+    },
+});
 
-const pdfReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_PDF_TEXT:
-            return { ...state, pdfText: action.payload };
-        default:
-            return state;
-    }
-};
+// Export the action created by createSlice for use in components
+export const { _setPdfText } = pdfSlice.actions;
 
-export default pdfReducer;
+// Export the reducer to be used in the store configuration
+export default pdfSlice.reducer;

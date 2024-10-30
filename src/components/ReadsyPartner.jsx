@@ -3,15 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import SpeechToText from './SpeechToText';
 import useCommandRecognition from './SpeechRecognition';
 import { setNotes, addNote, editNote, deleteNote } from "../features/notes/notesSlice";
-
+import { startTTS, stopTTS } from '../features/tts/ttsSlice';
+import startSpeaking from './TextToSpeech';
 
 const ReadsyPartner = ({ onCommand }) => {
+    const ttsDispatch = useDispatch((state) => state.tts.readAloud);
+    const ttsStatus = useSelector((state) => state.tts.readAloud);
     const dispatch = useDispatch((state) => state.notes.userNotes);
-    const pdfText = useSelector((state) => state.pdfReducer.pdfText);
+    const pdfText = useSelector((state) => state.pdf.pdfText);
+    const [registerInput, setRegisterInput] = useState(false);
     const [convHistory, setConvHistory] = useState([]);
     const [isHovered, setIsHovered] = useState(false);
     const [isListening, setIsListening] = useState(false);
     const [summary, setSummary] = useState('gwrfwefwfwe');
+    const [isRecording, setIsRecording] = useState(null);
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseOut = () => setIsHovered(false);
@@ -40,7 +45,7 @@ const ReadsyPartner = ({ onCommand }) => {
             },
         ];
 
-        // Update state to include the latest prompt in the history
+        // Update state to include the latest prompt in history
         setConvHistory(updatedConvHistory);
 
         const url = '/.netlify/functions/readsyPartner';
@@ -58,8 +63,8 @@ const ReadsyPartner = ({ onCommand }) => {
         const answer = await response.json();
 
         await showAnswer(answer.text);
-
-        return answer;
+        console.log(answer.text);
+        return answer.text;
     };
 
 
@@ -91,34 +96,40 @@ const ReadsyPartner = ({ onCommand }) => {
             }]);
     }
 
+    // Create the html elements for updating the conversation with the latest user message
+    const createHtmlMessage = (message) => {
+        // Get the parent container where the messages are displayed
+        const convParentElement = document.querySelector('.readsy-conversation');
+
+        // Create a div element and assign the proper class for styling
+        const createElement = document.createElement('div');
+        createElement.setAttribute('class', 'user-message-to-readsy');
+
+        // Create a p element that will display the user message
+        const createMessage = document.createElement('p');
+        createMessage.setAttribute('class', 'font-medium');
+        const msg = document.createTextNode(message);
+
+        // Append the elements and text node in order to show the latest prompt that the user sent to Readsy.
+        createMessage.appendChild(msg);
+        createElement.appendChild(createMessage);
+        convParentElement.appendChild(createElement);
+
+        // clear prompt input box
+        const inputBox = document.querySelector('.readsy-input-box');
+        inputBox.value = '';
+    }
+
     // Send the prompt to readsy
     const handleSendPrompt = (e) => {
         // Check if the pressed key is 'enter'
         if (e.keyCode == 13) {
+            const prompt = e.target.value;
+
             // Send the prompt to gpt 
-            fetchAnswer(e.target.value);
+            fetchAnswer(prompt);
 
-            // Create the html elements for updating the conversation with the latest user message
-
-            // Get the parent container where the messages are displayed
-            const convParentElement = document.querySelector('.readsy-conversation');
-
-            // Create a div element and assign the proper class for styling
-            const createElement = document.createElement('div');
-            createElement.setAttribute('class', 'user-message-to-readsy');
-
-            // Create a p element that will display the user message
-            const createMessage = document.createElement('p');
-            createMessage.setAttribute('class', 'font-medium');
-            const msg = document.createTextNode(e.target.value);
-
-            // Append the elements and text node in order to show the latest prompt that the user sent to Readsy.
-            createMessage.appendChild(msg);
-            createElement.appendChild(createMessage);
-            convParentElement.appendChild(createElement);
-
-            // Clear the message input box
-            e.target.value = '';
+            createHtmlMessage(prompt);
         }
     }
 
@@ -130,7 +141,10 @@ const ReadsyPartner = ({ onCommand }) => {
 
     const handleCommand = (command) => {
         if (command === "stop") {
-            setIsListening(false); // Update state if needed
+            if (ttsStatus) {
+                ttsDispatch(stopTTS());
+            }
+
         }
         if (command === "open") {
             handleToggleNavbar();
@@ -164,6 +178,21 @@ const ReadsyPartner = ({ onCommand }) => {
         setIsListening(!isListening);
     };
 
+
+
+    // Send the prompt after the speech is registered
+    const handleSendRegisteredPrompt = async (status, prompt) => {
+        if (status && prompt !== "") {
+            createHtmlMessage(prompt);
+            const answer = await fetchAnswer(prompt);
+            const result = await startSpeaking(answer);
+            setIsRecording(true);
+        } else {
+            setIsRecording(false);
+        }
+    }
+    
+
     return (
 
         <>
@@ -190,7 +219,12 @@ const ReadsyPartner = ({ onCommand }) => {
                         type="search"
                         placeholder="Ask me something"
                         className="readsy-input-box" />
-                    <SpeechToText handleSpeechInput={handleSpeechInput} />
+                    <SpeechToText
+                        onRegisterEnd={handleSendRegisteredPrompt}
+                        handleSpeechInput={handleSpeechInput}
+                        isRecording={isRecording}
+                        setIsRecording={setIsRecording}
+                    />
                 </div>
 
             </aside>

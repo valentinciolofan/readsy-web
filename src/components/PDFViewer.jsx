@@ -2,19 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as PDFJS from "pdfjs-dist";
 import { TextLayer } from "pdfjs-dist";
-import { _setPdfText } from "../features/pdf/action";
+import { _setPdfText } from "../features/pdf/pdfReducer";
+import { startTTS, stopTTS } from "../features/tts/ttsSlice";
+import startSpeaking  from './TextToSpeech'
 
 PDFJS.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.7.76/build/pdf.worker.min.mjs";
 const pdfUrl = '/1.pdf';
 
 const PdfViewer = () => {
-  const dispatch = useDispatch();
-  const pdfTextState = useSelector((state) => state.pdfReducer.pdfText);
+  const ttsDispatch = useDispatch(state => state.tts.readAloud);
+  const ttsStatus = useSelector(state => state.tts.readAloud);
+  const pdfText = useDispatch((state) => state.pdf.pdfText)
+  const pdfTextState = useSelector((state) => state.pdf.pdfText);
   const pagesContainerRef = useRef(null);
   const [pdfDoc, setPdfDoc] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [scalePdf, setScalePdf] = useState(1);
-  const [pdfText, setPdfText] = useState('');
   const [readAloud, setReadAloud] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [voices, setVoices] = useState([]);
@@ -40,7 +43,8 @@ const PdfViewer = () => {
     };
 
     loadVoices();
-  }, []);
+    console.log(ttsStatus);
+  }, [ttsStatus]);
 
 
 
@@ -146,11 +150,9 @@ const PdfViewer = () => {
       .replace(/\s+/g, ' ')        // Replace multiple spaces with a single space
       .replace(/\n+/g, '\n')       // Remove multiple consecutive newlines
       .trim();
-    // Save local state of the extracted text
-    setPdfText(extractedText);
 
     // Set global state of the extracted text
-    dispatch(_setPdfText(extractedText));
+    pdfText(_setPdfText(extractedText));
   }
 
   // After pdf is loaded, set loading to false 
@@ -181,57 +183,7 @@ const PdfViewer = () => {
     });
 
 
-  };
-  const startSpeaking = (text) => {
-    if (!text) {
-      console.error("No text provided to speak.");
-      return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    console.log(utterance)
-    // Set the selected voice
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-    }
-
-    // Event listeners for logging and debugging
-    utterance.onstart = () => {
-      console.log("Speech started.");
-    };
-
-    utterance.onend = () => {
-      console.log("Speech ended.");
-    };
-
-    utterance.onerror = (event) => {
-      console.error("Speech synthesis encountered an error:", event.error);
-    };
-
-    utterance.onpause = () => {
-      console.log("Speech paused.");
-    };
-
-    utterance.onresume = () => {
-      console.log("Speech resumed.");
-    };
-
-    utterance.onmark = (event) => {
-      console.log(`Speech reached mark: ${event.name}`);
-    };
-
-    utterance.onboundary = (event) => {
-      console.log(`Speech reached boundary at character ${event.charIndex}`);
-    };
-
-    // Start speaking
-    try {
-      window.speechSynthesis.speak(utterance);
-    } catch (error) {
-      console.error("Error occurred while starting speech synthesis:", error);
-    }
-  };
-
+  }
 
   // Handle voice change
   const handleVoiceChange = (e) => {
@@ -241,12 +193,12 @@ const PdfViewer = () => {
 
   // Handle Read Aloud Mode
   const handleReadAloud = () => {
-    if (readAloud) {
+    if (ttsStatus) {
       window.speechSynthesis.cancel();
-      setReadAloud(!readAloud);
+      ttsDispatch(stopTTS());
     } else {
-      startSpeaking(pdfText);
-      setReadAloud(!readAloud);
+      startSpeaking(pdfTextState);
+      ttsDispatch(startTTS());
     }
 
   };
@@ -310,7 +262,7 @@ const PdfViewer = () => {
 
 
       <button type="button" onClick={handleReadAloud}>
-        {readAloud ? 'Stop' : 'Read Aloud'}
+        {ttsStatus ? 'Stop' : 'Read Aloud'}
       </button>
       <button type="button" onClick={handlePause}>
         {isPaused ? 'Resume' : 'Pause'}
