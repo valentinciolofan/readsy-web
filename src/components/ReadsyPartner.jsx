@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import SpeechToText from './SpeechToText';
 import useCommandRecognition from './SpeechRecognition';
+import { setNotes, addNote, editNote, deleteNote } from "../features/notes/notesSlice";
 
 
-const ReadsyPartner = () => {
+const ReadsyPartner = ({ onCommand }) => {
+    const dispatch = useDispatch((state) => state.notes.userNotes);
+    const pdfText = useSelector((state) => state.pdfReducer.pdfText);
     const [convHistory, setConvHistory] = useState([]);
     const [isHovered, setIsHovered] = useState(false);
     const [isListening, setIsListening] = useState(false);
+    const [summary, setSummary] = useState('gwrfwefwfwe');
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseOut = () => setIsHovered(false);
@@ -20,9 +25,9 @@ const ReadsyPartner = () => {
         }
     }
 
-    // useEffect(() => 
-    // }, [userPrompt])
-
+    useEffect(() => async () => {
+        await fetchAnswer('Hello');
+    }, [])
 
     // Fetch answer
     const fetchAnswer = async (user_prompt) => {
@@ -53,6 +58,8 @@ const ReadsyPartner = () => {
         const answer = await response.json();
 
         await showAnswer(answer.text);
+
+        return answer;
     };
 
 
@@ -130,7 +137,20 @@ const ReadsyPartner = () => {
         }
         if (command === "close") {
             handleToggleNavbar();
+        } else if (command === "summarise") {
+            if (pdfText) {
+                const summary = fetchAnswer('Summarize the following book: ' + pdfText);
+                setSummary(summary);
+            }
+        } else if (command === "note") {
+            const newNote = {
+                id: Date.now(),
+                title: "New Note",
+                description: summary,
+            };
+            dispatch(addNote(newNote));
         }
+
     };
 
     const { startListening, stopListening } = useCommandRecognition(handleCommand);
@@ -161,14 +181,7 @@ const ReadsyPartner = () => {
                     <p className='font-normal'>Readsy</p>
                 </div>
                 <div className='readsy-conversation-container'>
-                    <div className="readsy-conversation">
-                        <div className="readsy-message">
-                            <p className='font-medium'>Hello, you can ask me anything about books. 😁</p>
-                        </div>
-
-
-                    </div>
-
+                    <div className="readsy-conversation"></div>
                 </div>
 
                 <div className="readsy-input-box-container">

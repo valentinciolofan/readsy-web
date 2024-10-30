@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [noteIsOpen, setNoteIsOpen] = useState(false);
+  const [onCommand, setOnCommand] = useState(null);
 
   const handleNoteIsOpen = () => {
     setNoteIsOpen(true);
@@ -40,11 +41,7 @@ const Dashboard = () => {
     if (user) {
       fetchUserFiles();
     }
-    const noteisopen = window.location.pathname.slice(0, 17);
 
-    if (noteisopen === '/dashboard/notes/') {
-      setNoteIsOpen(true);
-    }
   }, [user]);
 
   if (loading) {
@@ -55,13 +52,14 @@ const Dashboard = () => {
     return <p>{error}</p>;
   }
 
+
   return (
     <div className="container">
       <Menu />
       <main className={`dashboard-main ${noteIsOpen ? 'cream' : ''}`}>
         <Outlet />
       </main>
-        <ReadsyPartner />
+        <ReadsyPartner onCommand={onCommand}/>
     </div>
   );
 };

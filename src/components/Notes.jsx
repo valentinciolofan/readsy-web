@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
+import { setNotes, addNote, editNote, deleteNote } from "../features/notes/notesSlice";
 import Note from "./Note";
 
-const notesArray = [
+const initialNotes = [
     {
         id: 1,
         title: "How to Get Started with React",
@@ -57,12 +59,18 @@ const notesArray = [
 const colorClasses = ["green", "blue", "orange", "purple"];
 
 const Notes = () => {
+    const dispatch = useDispatch((state) => state.notes.userNotes);
     const navigate = useNavigate();
-    const [notes, setNotes] = useState(false);
+    const notes = useSelector((state) => state.notes.userNotes);
+    console.log(notes)
+    useEffect(() => {
+        dispatch(setNotes(initialNotes));
+    }, [dispatch])
 
-    const handleCreateNote = () => {
-        setNotes(true);
-    }
+
+    // const handleCreateNote = () => {
+    //     setNotes(true);
+    // }
 
     const handleOpenNote = (noteId) => {
         navigate(`/dashboard/notes/note/${noteId}`)
@@ -92,7 +100,7 @@ const Notes = () => {
                     </div>
                     {/* grid for notes */}
                     <div className="all-notes-container">
-                        {notesArray.map((note, i) =>
+                        {notes.map((note, i) =>
                             <div 
                                 className={`note-card ${colorClasses[i % colorClasses.length]}`}
                                 onClick={() => handleOpenNote(note.id)}>

@@ -34,6 +34,12 @@ const useCommandRecognition = (onCommandDetected) => {
             } else if (transcript.includes("bye read")) {
                 onCommandDetected("close"); // Trigger the stop function
                 recognition.stop(); // Stop recognition to avoid looping
+            } else if (transcript.includes("summarise")) {
+                onCommandDetected("summarise");
+                recognition.stop();
+            } else if (transcript.includes("note")) {
+                onCommandDetected("note");
+                recognition.stop();
             }
         };
 

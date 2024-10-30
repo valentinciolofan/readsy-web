@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as PDFJS from "pdfjs-dist";
 import { TextLayer } from "pdfjs-dist";
+import { _setPdfText } from "../features/pdf/action";
 
 PDFJS.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.7.76/build/pdf.worker.min.mjs";
 const pdfUrl = '/1.pdf';
 
 const PdfViewer = () => {
+  const dispatch = useDispatch();
+  const pdfTextState = useSelector((state) => state.pdfReducer.pdfText);
   const pagesContainerRef = useRef(null);
   const [pdfDoc, setPdfDoc] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
@@ -142,7 +146,11 @@ const PdfViewer = () => {
       .replace(/\s+/g, ' ')        // Replace multiple spaces with a single space
       .replace(/\n+/g, '\n')       // Remove multiple consecutive newlines
       .trim();
+    // Save local state of the extracted text
     setPdfText(extractedText);
+
+    // Set global state of the extracted text
+    dispatch(_setPdfText(extractedText));
   }
 
   // After pdf is loaded, set loading to false 
