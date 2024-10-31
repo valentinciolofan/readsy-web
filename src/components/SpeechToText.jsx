@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { stopTTS } from "../features/tts/ttsSlice";
 
 const SpeechToText = ({ onRegisterEnd, handleSpeechInput, isRecording, setIsRecording }) => {
     const ttsStatus = useSelector(state => state.tts.readAloud);
+    const ttsDispatch = useDispatch(state => state.tts.readAloud);
     const mediaRecorderRef = useRef(null);
     const audioChunks = useRef([]);
     const streamRef = useRef(null);
@@ -19,6 +21,12 @@ const SpeechToText = ({ onRegisterEnd, handleSpeechInput, isRecording, setIsReco
 
     const startRecording = async () => {
         try {
+            // check if tts is on
+            if (ttsStatus) {
+                ttsDispatch(stopTTS());
+            }
+
+
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             streamRef.current = stream;
             mediaRecorderRef.current = new MediaRecorder(stream);

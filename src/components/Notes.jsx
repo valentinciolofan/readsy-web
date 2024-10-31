@@ -15,46 +15,6 @@ const initialNotes = [
         title: "Understanding JavaScript Closures",
         description: "Closures are a powerful concept in JavaScript. This article explains what they are and how to use them effectively in your code."
     },
-    {
-        id: 3,
-        title: "Introduction to CSS Grid Layout",
-        description: "CSS Grid Layout is a 2D layout system for the web. Discover how to use it to create complex, responsive layouts easily."
-    },
-    {
-        id: 4,
-        title: "Building a REST API with Node.js",
-        description: "A step-by-step guide on building a simple REST API using Node.js and Express, complete with routing and middleware."
-    },
-    {
-        id: 5,
-        title: "Improving Web Performance",
-        description: "Tips and tricks to make your website faster and more efficient, from optimizing images to leveraging browser caching."
-    },
-    {
-        id: 6,
-        title: "Understanding Flexbox in CSS",
-        description: "Flexbox is a powerful layout module in CSS. Learn how to use it to create flexible and responsive web layouts."
-    },
-    {
-        id: 7,
-        title: "Getting Started with Firebase Authentication",
-        description: "Learn how to integrate Firebase Authentication into your web app to easily handle user login and registration."
-    },
-    {
-        id: 8,
-        title: "State Management in React with Redux",
-        description: "This guide explores how Redux helps manage state in larger React applications, providing a predictable state container."
-    },
-    {
-        id: 9,
-        title: "Debugging JavaScript Applications",
-        description: "Effective debugging techniques for JavaScript developers using browser tools and popular libraries like Node Inspector."
-    },
-    {
-        id: 10,
-        title: "Best Practices for Writing Clean Code",
-        description: "Writing clean, maintainable code is key to long-term success. Discover best practices that can help improve code quality."
-    }
 ];
 const colorClasses = ["green", "blue", "orange", "purple"];
 
@@ -68,9 +28,9 @@ const Notes = () => {
     }, [dispatch])
 
 
-    // const handleCreateNote = () => {
-    //     setNotes(true);
-    // }
+    const handleCreateNote = () => {
+        
+    }
 
     const handleOpenNote = (noteId) => {
         navigate(`/dashboard/notes/note/${noteId}`)
@@ -92,8 +52,9 @@ const Notes = () => {
                         </div>
                         <button
                             type="button"
-                            className="import btn-primary rounded"
+                            className="createNote btn-primary rounded"
                             style={{ display: notes ? "block" : "none" }}
+                            onClick={handleCreateNote}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"></path></svg>
                         </button>

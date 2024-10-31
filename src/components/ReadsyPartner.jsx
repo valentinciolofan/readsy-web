@@ -5,6 +5,7 @@ import useCommandRecognition from './SpeechRecognition';
 import { setNotes, addNote, editNote, deleteNote } from "../features/notes/notesSlice";
 import { startTTS, stopTTS } from '../features/tts/ttsSlice';
 import startSpeaking from './TextToSpeech';
+import ReactMarkdown from 'react-markdown';
 
 const ReadsyPartner = ({ onCommand }) => {
     const ttsDispatch = useDispatch((state) => state.tts.readAloud);
@@ -18,6 +19,7 @@ const ReadsyPartner = ({ onCommand }) => {
     const [summary, setSummary] = useState('gwrfwefwfwe');
     const [isRecording, setIsRecording] = useState(null);
 
+
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseOut = () => setIsHovered(false);
     const handleToggleNavbar = () => {
@@ -30,10 +32,7 @@ const ReadsyPartner = ({ onCommand }) => {
         }
     }
 
-    useEffect(() => async () => {
-        await fetchAnswer('Hello');
-    }, [])
-
+    
     // Fetch answer
     const fetchAnswer = async (user_prompt) => {
         // Create a new conversation history array with the latest user message
@@ -60,78 +59,68 @@ const ReadsyPartner = ({ onCommand }) => {
             }),
         });
 
-        const answer = await response.json();
+        let answer = await response.json();
+
+        if (answer.text.includes('##NOTE_START##') && answer.text.includes('##NOTE_END##')) {
+            const noteStart = answer.text.indexOf('##NOTE_START##') + '##NOTE_START##'.length;
+            const noteEnd = answer.text.indexOf('##NOTE_END##');
+
+            // Extract the content between the markers (without markers themselves)
+            const noteContent = answer.text.slice(noteStart, noteEnd).trim();
+
+            // Set the extracted note content
+            setSummary({
+                'title': 'note',
+                'content': noteContent  // This only has the note content, no markers
+            });
+
+            // Update answer.text to remove the markers, keeping the note content readable
+            answer.text = answer.text.replace('##NOTE_START##', 'Note: "').replace('##NOTE_END##', '"');
+        }
 
         await showAnswer(answer.text);
-        console.log(answer.text);
+
         return answer.text;
     };
 
-
     // Show Readsy answer
     const showAnswer = async (message) => {
-        // Get the parent container where the messages are displayed
-        const convParentElement = document.querySelector('.readsy-conversation');
-
-        // Create a div element and assign the proper class for styling
-        const createElement = document.createElement('div');
-        createElement.setAttribute('class', 'readsy-message');
-
-        // Create a p element that will display the user message
-        const createMessage = document.createElement('p');
-        createMessage.setAttribute('class', 'font-medium');
-        const msg = document.createTextNode(message);
-
-        // Append the elements and text node in order to show the latest prompt that the user sent to Readsy.
-        createMessage.appendChild(msg);
-        createElement.appendChild(createMessage);
-        convParentElement.appendChild(createElement);
-
-        // Update conversation history.
-        setConvHistory([
-            ...convHistory,
+        setConvHistory(prevHistory => [
+            ...prevHistory,
             {
-                'role': 'bot',
-                'content': message
-            }]);
-    }
+                role: 'bot',
+                content: message
+            }
+        ]);
+    };
 
     // Create the html elements for updating the conversation with the latest user message
     const createHtmlMessage = (message) => {
-        // Get the parent container where the messages are displayed
-        const convParentElement = document.querySelector('.readsy-conversation');
-
-        // Create a div element and assign the proper class for styling
-        const createElement = document.createElement('div');
-        createElement.setAttribute('class', 'user-message-to-readsy');
-
-        // Create a p element that will display the user message
-        const createMessage = document.createElement('p');
-        createMessage.setAttribute('class', 'font-medium');
-        const msg = document.createTextNode(message);
-
-        // Append the elements and text node in order to show the latest prompt that the user sent to Readsy.
-        createMessage.appendChild(msg);
-        createElement.appendChild(createMessage);
-        convParentElement.appendChild(createElement);
-
-        // clear prompt input box
-        const inputBox = document.querySelector('.readsy-input-box');
-        inputBox.value = '';
-    }
-
-    // Send the prompt to readsy
-    const handleSendPrompt = (e) => {
-        // Check if the pressed key is 'enter'
-        if (e.keyCode == 13) {
-            const prompt = e.target.value;
-
-            // Send the prompt to gpt 
-            fetchAnswer(prompt);
-
-            createHtmlMessage(prompt);
+        // first check if there is any marker inside message
+        if (message.includes('##END_SESSION##')) {
+            message = message.replace('##END_SESSION##', '');
         }
-    }
+        setConvHistory(prevHistory => [
+            ...prevHistory,
+            {
+                role: 'user',
+                content: message
+            }
+        ]);
+    };
+    // Send the prompt to readsy
+    const handleSendPrompt = async (e) => {
+        if (e.keyCode === 13) {
+            const prompt = e.target.value;
+            createHtmlMessage(prompt);
+
+            // Clear input box
+            e.target.value = '';
+
+            // Fetch and show the bot's response
+            const response = await fetchAnswer(prompt);
+        }
+    };
 
     const handleSpeechInput = (speech_input) => {
         const input = document.querySelector('.readsy-input-box');
@@ -139,44 +128,34 @@ const ReadsyPartner = ({ onCommand }) => {
         input.value = speech_input;
     }
 
-    const handleCommand = (command) => {
-        if (command === "stop") {
-            if (ttsStatus) {
-                ttsDispatch(stopTTS());
-            }
+    // const handleCommand = (command) => {
+    //     if (command === "stop") {
+    //         if (ttsStatus) {
+    //             ttsDispatch(stopTTS());
+    //         }
 
-        }
-        if (command === "open") {
-            handleToggleNavbar();
-        }
-        if (command === "close") {
-            handleToggleNavbar();
-        } else if (command === "summarise") {
-            if (pdfText) {
-                const summary = fetchAnswer('Summarize the following book: ' + pdfText);
-                setSummary(summary);
-            }
-        } else if (command === "note") {
-            const newNote = {
-                id: Date.now(),
-                title: "New Note",
-                description: summary,
-            };
-            dispatch(addNote(newNote));
-        }
+    //     }
+    //     if (command === "open") {
+    //         handleToggleNavbar();
+    //     }
+    //     if (command === "close") {
+    //         handleToggleNavbar();
+    //     } else if (command === "summarise") {
+    //         if (pdfText) {
+    //             const summary = fetchAnswer('Summarize the following book: ' + pdfText);
+    //             setSummary(summary);
+    //         }
+    //     } else if (command === "note") {
+    //         const newNote = {
+    //             id: Date.now(),
+    //             title: "New Note",
+    //             description: summary,
+    //         };
+    //         dispatch(addNote(newNote));
+    //     }
 
-    };
+    // };
 
-    const { startListening, stopListening } = useCommandRecognition(handleCommand);
-
-    const toggleListening = () => {
-        if (isListening) {
-            stopListening();
-        } else {
-            startListening();
-        }
-        setIsListening(!isListening);
-    };
 
 
 
@@ -184,21 +163,32 @@ const ReadsyPartner = ({ onCommand }) => {
     const handleSendRegisteredPrompt = async (status, prompt) => {
         if (status && prompt !== "") {
             createHtmlMessage(prompt);
-            const answer = await fetchAnswer(prompt);
+            let answer = await fetchAnswer(prompt);
             const result = await startSpeaking(answer);
             setIsRecording(true);
-        } else {
-            setIsRecording(false);
         }
     }
-    
+
 
     return (
 
         <>
-            <button onClick={toggleListening}>
+            {/* <button onClick={toggleListening}>
                 {isListening ? "Stop Listening" : "Start Listening"}
-            </button>
+            </button> 
+              // const { startListening, stopListening } = useCommandRecognition(handleCommand);
+
+    // const toggleListening = () => {
+    //     if (isListening) {
+    //         stopListening();
+    //     } else {
+    //         startListening();
+    //     }
+    //     setIsListening(!isListening);
+    // };
+
+            
+            */}
             <aside className="readsy-gpt"
                 onMouseOver={handleMouseEnter}
                 onMouseLeave={handleMouseOut}>
@@ -210,7 +200,12 @@ const ReadsyPartner = ({ onCommand }) => {
                     <p className='font-normal'>Readsy</p>
                 </div>
                 <div className='readsy-conversation-container'>
-                    <div className="readsy-conversation"></div>
+                    <div className="readsy-conversation">
+                        {convHistory.map((message, index) => (
+                            <ReactMarkdown key={index}
+                                className={message.role === 'user' ? 'user-message-to-readsy' : 'readsy-message'} >{message.content}</ReactMarkdown>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="readsy-input-box-container">

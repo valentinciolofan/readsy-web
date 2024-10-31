@@ -852,6 +852,7 @@ p {
     display: flex;
     flex-direction: column-reverse;
     overflow-y: auto;
+    width: 100%;
     height: 100%;
     padding-bottom: 40px;
 }
@@ -897,12 +898,12 @@ p {
     padding: 10px;
     width: fit-content;
     border-radius: 15px;
-    display: flex;
-    justify-content: flex-start;
     max-width: 70%;
     height: auto;
     margin-left: 15px;
+    color: #ffffff;
 }
+
 
 .user-message-to-readsy {
     background-color: #2d2d2d;
@@ -911,8 +912,23 @@ p {
     border-radius: 15px;
     align-self: flex-end;
     margin-right: 15px;
+    color: #ffffff;
     max-width: 70%;
 }
+.user-message-to-readsy *, .readsy-message * {
+    color: #ffffff;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+.readsy-message ul, .readsy-message ol {
+    padding-left: 0.5em; /* Adjust as needed */
+    margin: 0;
+    list-style-position: inside; 
+}
+
+
 
 .readsy-input-box {
     background-color: #2d2d2d;
