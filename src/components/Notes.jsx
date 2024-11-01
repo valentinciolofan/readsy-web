@@ -28,9 +28,9 @@ const Notes = () => {
     }, [dispatch])
 
 
-    const handleCreateNote = () => {
-        
-    }
+    // const handleCreateNote = () => {
+    //     setNotes(true);
+    // }
 
     const handleOpenNote = (noteId) => {
         navigate(`/dashboard/notes/note/${noteId}`)
@@ -60,17 +60,18 @@ const Notes = () => {
                         </button>
                     </div>
                     {/* grid for notes */}
-                    <div className="all-notes-container">
-                        {notes.map((note, i) =>
-                            <div 
+                    {/* <div className="all-notes-container">
+                        {notesArray.map((note, i) => (
+                            <div
+                                key={note.id || i} // Adding a unique key prop here
                                 className={`note-card ${colorClasses[i % colorClasses.length]}`}
-                                onClick={() => handleOpenNote(note.id)}>
+                                onClick={() => handleOpenNote(note.id)}
+                            >
                                 <p className="font-normal bold">{note.title}</p>
                                 <p className="font-small">{note.description}</p>
-                            </div>)
-                        }
-
-                    </div>
+                            </div>
+                        ))}
+                    </div> */}
                 </div>
             ) : (
 

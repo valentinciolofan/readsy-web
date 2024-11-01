@@ -612,7 +612,29 @@ label.remember-me-label {
 
 /* ########## note styling ##### */
 .note-container {
-    margin-top: 24px;
+    background-color: #F5EBC7;
+    min-height: 100%;
+    max-width: 100%;
+    padding: 0px 20px 0px 20px;
+}
+
+.note-header {
+    display: flex;
+    align-items: center;
+}
+
+.note-title {
+    font-size: 1.5em;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.note-wrapper {
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .note-header {
@@ -636,85 +658,32 @@ p {
 .btnBack:hover {
     cursor: pointer;
 }
-
-.note-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-}
-
-.note-header {
-    display: flex;
-    align-items: center;
-}
-
-.note-title {
-    font-size: 1.5em;
-    border: none;
-    background-color: transparent;
+.note-editor {
+    text-align: left;
     outline: none;
-}
-
-.saveNoteBtn,
-.drawingBtn,
-.eraserBtn,
-.clear-drawings {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.saveNoteBtn.active,
-.drawingBtn.active,
-.eraserBtn.active,
-.clear-drawings.active {
-    background-color: #00000011;
-    border: 1px solid #00000011;
-}
-
-.saveNoteBtn,
-.drawingBtn,
-.eraserBtn,
-.clear-drawings svg {
-    width: 3.75em;
-    height: 3.75em;
-}
-
-.note-editor-container {
     position: relative;
-    min-height: 70vh;
-    padding: 15px;
 }
-
-.rich-text-editor {
-    min-height: 300px;
-}
-
-.canvas-controls {
-    margin-top: 10px;
-}
-
-.note-editor-toolbar-custom {
+.note-toolbar {
     position: absolute;
-    bottom: -10%;
-    left: 0;
+    z-index: 50;
+    background-color: #2d2d2d;
     display: flex;
-    align-items: center;
+    flex-wrap: nowrap;
+    border-radius: 15px;
     justify-content: center;
-    gap: 50px;
-    min-width: 100%;
-    height: fit-content;
-    background-color: #f5ebc754;
-    backdrop-filter: blur(40px);
-    border-top: #909090 solid 1px;
-    border-radius: 50px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    align-items: center;
 }
-
-
-
+.note-toolbar button {
+    border: none;
+    background-color: transparent;
+    color: #909090;
+    cursor: pointer;
+    pointer-events: fill;
+    padding: 5px;
+}
+.note-toolbar button.active {
+    color: yellow;
+}
 
 
 
@@ -915,17 +884,22 @@ p {
     color: #ffffff;
     max-width: 70%;
 }
-.user-message-to-readsy *, .readsy-message * {
+
+.user-message-to-readsy *,
+.readsy-message * {
     color: #ffffff;
     font-size: 16px;
     font-family: 'Inter', sans-serif;
     line-height: 1.5;
     margin-bottom: 8px;
 }
-.readsy-message ul, .readsy-message ol {
-    padding-left: 0.5em; /* Adjust as needed */
+
+.readsy-message ul,
+.readsy-message ol {
+    padding-left: 0.5em;
+    /* Adjust as needed */
     margin: 0;
-    list-style-position: inside; 
+    list-style-position: inside;
 }
 
 
@@ -1172,8 +1146,8 @@ p {
 
     /* note workplace style */
 
-    .note-container {
-        margin-top: 56px;
+    .note-wrapper {
+        padding-top: 56px;
     }
 
     .note-editor-toolbar-custom {
