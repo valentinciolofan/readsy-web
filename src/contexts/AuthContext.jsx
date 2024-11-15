@@ -20,8 +20,10 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  const uid = user ? user.uid : null;
+
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, uid }}>
       {!loading && children}
     </AuthContext.Provider>
   );

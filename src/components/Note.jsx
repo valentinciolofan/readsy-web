@@ -1,42 +1,52 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { convertFromRaw } from 'draft-js';
+import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../firebase/firestore/notes/firestoreAsyncThunk';
+import NoteHeader from "./NoteHeader";
 import NoteEditor from "./NoteEditor";
+import { useDispatch } from "react-redux";
 
 const Note = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
-    const [noteTitle, setNoteTitle] = useState("The Intelligent Investor");
-    const [noteContent, setNoteContent] = useState(""); // Rich text content
-    const [isDrawingMode, setIsDrawingMode] = useState(false);
-    const [isEraserMode, setIsEraserMode] = useState(false);
+    const dispatch = useDispatch(state => state.notes.userNotes);
+    const location = useLocation();
+    const userId = location?.state?.uid;
+    const noteTitleRef = useRef(null);
+    const [userNotes, setUserNotes] = useState(location.state?.userNotes || '');
+    const [noteTitle, setNoteTitle] = useState(location.state?.note?.title || '');
+    const [noteContent, setNoteContent] = useState(location.state?.note?.content || null);
+    const [alertMessage, setAlertMessage] = useState(null);
 
-    const goBack = () => {
-        navigate(-1);
-    };
-
-
+    const loadNoteContent = (note_content) => {
+        setNoteContent(note_content)
+    }
+    const closeNote = async () => {
+        const noteId = location.state?.note?.id;
+        const note = {
+            title: noteTitle || 'New Note',
+            content: noteContent || ''
+        }
+        if (noteId) {
+            dispatch(editUserNote({ noteId, note}));
+        } else {
+            dispatch(addUserNote({ userId, note }));
+        }
+        navigate('/dashboard/notes');
+    }
 
     return (
         <div className="note-container">
             <div className="note-wrapper">
-                <div className="note-header">
-                    <button type="button" className="btnBack" onClick={goBack}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="m7.825 13l5.6 5.6L12 20l-8-8l8-8l1.425 1.4l-5.6 5.6H20v2z"></path>
-                        </svg>
-                    </button>
-                    <h1
-                        contentEditable="true"
-                        className="note-title"
-                    >
-                        {noteTitle}
-                    </h1>
-
-                </div>
-                <NoteEditor />
+                <NoteHeader
+                    noteTitleRef={noteTitleRef}
+                    noteTitle={noteTitle}
+                    setNoteTitle={setNoteTitle}
+                    noteContent={noteContent}
+                    closeNote={closeNote}
+                />
+                <NoteEditor noteContent={noteContent} loadNoteContent={loadNoteContent} setNoteContent={setNoteContent} />
             </div>
         </div>
-
     );
 };
 

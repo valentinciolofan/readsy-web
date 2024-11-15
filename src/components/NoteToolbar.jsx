@@ -1,17 +1,13 @@
 import React from 'react';
 
-const NoteToolbar = ({ toolbarBtnRef, toolbarPosition, activeButton, setActiveButton }) => {
-  // Toggle Toolbar Formatting Option
-  const toggleMark = (event, action) => {
-    setActiveButton(action);
-    toolbarBtnRef.current = action;
-  };
+const NoteToolbar = ({ onSelectedBtn, toolbarPosition, activeButton }) => {
+ 
 
   return (
     <div className="note-toolbar" style={{ top: toolbarPosition.top, left: toolbarPosition.left }}>
       {/* Bold Button */}
       <button
-        onClick={(e) => toggleMark(e, 'bold')}
+        onClick={(e) => onSelectedBtn(e, 'bold')}
         className={activeButton === 'bold' ? 'active' : ''}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
@@ -21,8 +17,8 @@ const NoteToolbar = ({ toolbarBtnRef, toolbarPosition, activeButton, setActiveBu
 
       {/* Text Button */}
       <button
-        onClick={(e) => toggleMark(e, 'text')}
-        className={activeButton === 'text' ? 'active' : ''}
+        onClick={(e) => onSelectedBtn(e, '')}
+        className={activeButton === '' ? 'active' : ''}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
           <g fill="none">
@@ -34,8 +30,8 @@ const NoteToolbar = ({ toolbarBtnRef, toolbarPosition, activeButton, setActiveBu
 
       {/* Italic Button */}
       <button
-        onClick={(e) => toggleMark(e, 'italic')}
-        className={activeButton === 'italic' ? 'active' : ''}
+        onClick={(e) => onSelectedBtn(e, 'i')}
+        className={activeButton === 'i' ? 'active' : ''}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" strokeWidth={1.5}>
@@ -47,7 +43,7 @@ const NoteToolbar = ({ toolbarBtnRef, toolbarPosition, activeButton, setActiveBu
 
       {/* H1 Button */}
       <button
-        onClick={(e) => toggleMark(e, 'h1')}
+        onClick={(e) => onSelectedBtn(e, 'h1')}
         className={activeButton === 'h1' ? 'active' : ''}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
@@ -57,7 +53,7 @@ const NoteToolbar = ({ toolbarBtnRef, toolbarPosition, activeButton, setActiveBu
 
       {/* H2 Button */}
       <button
-        onClick={(e) => toggleMark(e, 'h2')}
+        onClick={(e) => onSelectedBtn(e, 'h2')}
         className={activeButton === 'h2' ? 'active' : ''}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
@@ -67,8 +63,8 @@ const NoteToolbar = ({ toolbarBtnRef, toolbarPosition, activeButton, setActiveBu
 
       {/* Underline Button */}
       <button
-        onClick={(e) => toggleMark(e, 'underline')}
-        className={activeButton === 'underline' ? 'active' : ''}
+        onClick={(e) => onSelectedBtn(e, 'u')}
+        className={activeButton === 'u' ? 'active' : ''}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
           <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 4v6a6 6 0 0 0 12 0V4M4 20h16"></path>

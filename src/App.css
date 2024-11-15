@@ -315,6 +315,7 @@ label.remember-me-label {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    padding: 0px 20px;
 }
 
 .dashboard-main {
@@ -613,16 +614,15 @@ label.remember-me-label {
 /* ########## note styling ##### */
 .note-container {
     background-color: #F5EBC7;
-    min-height: 100%;
     max-width: 100%;
-    padding: 0px 20px 0px 20px;
+    flex-grow: 1;
+    padding: 24px 20px 0px 20px;
 }
 
 .note-header {
     display: flex;
     align-items: center;
 }
-
 .note-title {
     font-size: 1.5em;
     border: none;
@@ -631,10 +631,11 @@ label.remember-me-label {
 }
 
 .note-wrapper {
-    padding-top: 24px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    height: 100%;
+    
 }
 
 .note-header {
@@ -659,9 +660,9 @@ p {
     cursor: pointer;
 }
 .note-editor {
-    text-align: left;
-    outline: none;
-    position: relative;
+    cursor: text;
+    padding: 16px;
+    flex-grow: 1;
 }
 .note-toolbar {
     position: absolute;
@@ -682,7 +683,7 @@ p {
     padding: 5px;
 }
 .note-toolbar button.active {
-    color: yellow;
+    color: #ffffff
 }
 
 
@@ -922,6 +923,65 @@ p {
 }
 
 
+/* ###########
+    ALERT MODAL STYLING
+########### */
+.alert-overlay { 
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 999;
+}
+.alert-box {
+    margin-top: 30px;
+    max-width: 400px;
+    height: fit-content;
+    background-color: #ec747496;
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    gap: 30px;
+    display: flex;
+    border: 1px solid #db6262;
+    justify-content: space-between;
+    align-items: center;
+}
+.alert-box-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+}
+#alertMessage {
+    color: #D53232;
+}
+.alert-box-icon {
+    background-color: #D53232;
+    border: 1px solid #c8303079;
+    box-shadow: rgba(188, 17, 17, 0.176) 0px 5px 15px;
+    border-radius: 8px;
+    padding: 10px;
+    color: #ffffff;
+}
+.btn-close-alert {
+    background-color: transparent;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    color: #909090;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.btn-close-alert:hover {
+    color: #ffffff;
+}
+
 /* animations */
 @keyframes fadeIn {
     from {
@@ -1146,7 +1206,7 @@ p {
 
     /* note workplace style */
 
-    .note-wrapper {
+    .note-container {
         padding-top: 56px;
     }
 

@@ -17,36 +17,36 @@ const Dashboard = () => {
   const handleNoteIsOpen = () => {
     setNoteIsOpen(true);
   }
-  useEffect(() => {
-    const fetchUserFiles = async () => {
-      try {
-        const q = query(
-          collection(db, 'userFiles'),
-          where('userId', '==', user.uid)
-        );
-        const querySnapshot = await getDocs(q);
-        const files = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setUserFiles(files);
-      } catch (error) {
-        console.error('Error fetching user PDFs:', error);
-        setError('Error fetching user PDFs. Please try again.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUserFiles = async () => {
+  //     try {
+  //       const q = query(
+  //         collection(db, 'userFiles'),
+  //         where('userId', '==', user.uid)
+  //       );
+  //       const querySnapshot = await getDocs(q);
+  //       const files = querySnapshot.docs.map(doc => ({
+  //         id: doc.id,
+  //         ...doc.data()
+  //       }));
+  //       setUserFiles(files);
+  //     } catch (error) {
+  //       console.error('Error fetching user PDFs:', error);
+  //       setError('Error fetching user PDFs. Please try again.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (user) {
-      fetchUserFiles();
-    }
+  //   if (user) {
+  //     fetchUserFiles();
+  //   }
 
-  }, [user]);
+  // }, [user]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
   if (error) {
     return <p>{error}</p>;

@@ -1,46 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom';
-import { setNotes, addNote, editNote, deleteNote } from "../features/notes/notesSlice";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../firebase/firestore/notes/firestoreAsyncThunk';
 import Note from "./Note";
 
-const initialNotes = [
-    {
-        id: 1,
-        title: "How to Get Started with React",
-        description: "Learn the basics of building a React application from setting up your environment to creating your first component."
-    },
-    {
-        id: 2,
-        title: "Understanding JavaScript Closures",
-        description: "Closures are a powerful concept in JavaScript. This article explains what they are and how to use them effectively in your code."
-    },
-];
 const colorClasses = ["green", "blue", "orange", "purple"];
 
 const Notes = () => {
+    const { id } = useParams();
+    const { user } = useAuth();
+    const uid = user ? user.uid : null;
     const dispatch = useDispatch((state) => state.notes.userNotes);
     const navigate = useNavigate();
-    const notes = useSelector((state) => state.notes.userNotes);
-    console.log(notes)
+    const { userNotes, loading, error } = useSelector(state => state.notes);
+
     useEffect(() => {
-        dispatch(setNotes(initialNotes));
-    }, [dispatch])
+        dispatch(fetchUserNotes(uid));
+        console.log(userNotes);
+    }, []);
 
 
-    // const handleCreateNote = () => {
-    //     setNotes(true);
-    // }
-
-    const handleOpenNote = (noteId) => {
-        navigate(`/dashboard/notes/note/${noteId}`)
+    const handleAddNote = async () => {
+        navigate(`/dashboard/notes/note/${'create'}`, { state: { uid, userNotes }})
+    };
+    const handleEditNote = (noteId) => {
+        const updatedNote = { title: 'Updated Title', content: 'Updated content' };
+        dispatch(editUserNote({ noteId, updatedNote }));
+    };
+    const handleDeleteNotes = (noteIds) => {
+        dispatch(deleteUserNotes({ uid, noteIds }));
+    };
+    const handleOpenNote = (note) => {
+        navigate(`/dashboard/notes/note/${note.title}`, { state: { uid, note, userNotes }})
     };
 
     return (
         <>
             {/* if there are notes, show them, if not, the user will see the create note state */}
-            {notes ? (
-                <div className="main-container">
+            {userNotes ? (
+                <div className="main-container  ">
                     <h3>My Notes</h3>
                     <div className="search-and-import">
                         <div className="search-box-container">
@@ -53,34 +52,33 @@ const Notes = () => {
                         <button
                             type="button"
                             className="createNote btn-primary rounded"
-                            style={{ display: notes ? "block" : "none" }}
-                            onClick={handleCreateNote}
+                            style={{ display: userNotes ? "block" : "none" }}
+                            onClick={handleAddNote}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"></path></svg>
                         </button>
                     </div>
                     {/* grid for notes */}
-                    {/* <div className="all-notes-container">
-                        {notesArray.map((note, i) => (
+                    <div className="all-notes-container">
+                        {userNotes.map((note, i) => (
                             <div
-                                key={note.id || i} // Adding a unique key prop here
+                                key={note.id} // Adding a unique key prop here
                                 className={`note-card ${colorClasses[i % colorClasses.length]}`}
-                                onClick={() => handleOpenNote(note.id)}
+                                onClick={() => handleOpenNote(note)}
                             >
                                 <p className="font-normal bold">{note.title}</p>
                                 <p className="font-small">{note.description}</p>
                             </div>
                         ))}
-                    </div> */}
+                    </div>
                 </div>
             ) : (
-
                 <div className="dashboard-zero-files">
                     <h3>It seems that you don’t have any notes yet.</h3>
                     <button
                         type='button'
                         className="btn-primary"
-                        onClick={handleCreateNote}
+                    // onClick={handleCreateNote}
                     >Create note</button>
                 </div>
             )}

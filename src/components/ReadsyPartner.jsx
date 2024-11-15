@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SpeechToText from './SpeechToText';
 import useCommandRecognition from './SpeechRecognition';
-import { setNotes, addNote, editNote, deleteNote } from "../features/notes/notesSlice";
 import { startTTS, stopTTS } from '../features/tts/ttsSlice';
 import startSpeaking from './TextToSpeech';
 import ReactMarkdown from 'react-markdown';
