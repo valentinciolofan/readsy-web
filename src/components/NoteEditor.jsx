@@ -47,7 +47,7 @@ const NoteEditor = ({ noteContent, loadNoteContent, setNoteContent }) => {
 
     return (
         <div
-            className='note-editor'
+            className='note-editor' 
             onClick={handleEditorFocus}>
             <Editor
                 ref={editorRef}

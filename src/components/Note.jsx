@@ -21,16 +21,27 @@ const Note = () => {
         setNoteContent(note_content)
     }
     const closeNote = async () => {
+        // Get note id if the note already exists
         const noteId = location.state?.note?.id;
+
+        // Convert the noteContent to editor content and get the 
+        const noteDescription = convertFromRaw(noteContent).getPlainText();
+        
+        // Create note object 
         const note = {
             title: noteTitle || 'New Note',
-            content: noteContent || ''
+            content: noteContent || '',
+            description: noteDescription.split(' ').slice(0, 13).join(' ')
         }
+
+        // If there is a note id, edit the actual note, else create a new note.
         if (noteId) {
             dispatch(editUserNote({ noteId, note}));
         } else {
             dispatch(addUserNote({ userId, note }));
         }
+
+        // Redirect the user to notes 
         navigate('/dashboard/notes');
     }
 
