@@ -571,6 +571,7 @@ label.remember-me-label {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    height: 24px;
 }
 .note-card {
     min-width: 150px;
@@ -581,6 +582,7 @@ label.remember-me-label {
     flex-direction: column;
     gap: 14px;
     cursor: pointer;
+    user-select: none;
 }
 .note-card-btn {
     background-color: transparent;
@@ -589,8 +591,10 @@ label.remember-me-label {
     color: #909090;
     width: 24px;
     height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-/* Hide the checkbox but keep it functional */
 .note-card-checkbox {
     position: absolute;
     opacity: 0;
@@ -598,16 +602,6 @@ label.remember-me-label {
     width: 24px;
     cursor: pointer;
   }
-  
-  .note-card-btn {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-  }
-  
-  /* Hidden but functional checkbox */
   .note-card-checkbox {
     position: absolute;
     opacity: 0;
@@ -615,8 +609,6 @@ label.remember-me-label {
     width: 24px;
     cursor: pointer;
   }
-  
-  /* Custom checkmark box */
   .note-card-checkmark {
     position: relative;
     height: 24px;
@@ -624,14 +616,14 @@ label.remember-me-label {
     background-color: transparent;
     border: 1px solid #909090;
     display: inline-block;
+    border-radius: 4px;
   }
   
-  /* Change background when checkbox is checked */
   .note-card-checkbox:checked + .note-card-checkmark {
-    background-color: #2196F3;
-  }
+    background-color: #000000;
+    border: 1px solid #000000;
+}
   
-  /* Add the checkmark */
   .note-card-checkmark:after {
     content: "";
     position: absolute;
@@ -640,12 +632,11 @@ label.remember-me-label {
     top: 5px;
     width: 5px;
     height: 10px;
-    border: solid white;
+    border: solid rgb(255, 255, 255);
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
   }
   
-  /* Show the checkmark when checkbox is checked */
   .note-card-checkbox:checked + .note-card-checkmark:after {
     display: block;
   }
