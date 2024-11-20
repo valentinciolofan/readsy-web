@@ -115,9 +115,8 @@ div.container>div.hero-section-col:last-child {
 .hidden {
     display: none;
 }
-
-.modal-auth-overlay {
-    z-index: 999;
+.modal-overlay {
+    z-index: 1000;
     background: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
@@ -335,18 +334,6 @@ label.remember-me-label {
     text-align: center;
     gap: 30px;
 }
-
-.import-file-modal-overlay {
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    opacity: 1;
-}
-
 .import-file-modal-container {
     z-index: 1001;
     background-color: #2D2D2D;
@@ -672,8 +659,52 @@ label.remember-me-label {
 .cream {
     background-color: #F5EBC7;
 }
-
-
+.modal-message {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.confirm-delete-modal {
+    padding: 20px 40px;
+    background-color: #2D2D2D;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+}
+.confirm-delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+.confirm-delete-actions::first-child {
+    padding: 5px;
+    border-radius: 100%;
+    border: none;
+}
+#deleteNotesBtn {
+    padding: 10px;
+    border: none;
+    background-color: #C3FF45;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+#cancelDeleteNotesBtn {
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    background-color: #D53232;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#cancelDeleteNotesBtn:hover, #deleteNotesBtn:hover {
+    opacity: 0.9;
+}
 /* ########## note styling ##### */
 .note-container {
     background-color: #F5EBC7;
@@ -1249,7 +1280,7 @@ p {
         height: 100%;
     }
 
-    .import-file-modal-overlay {
+    .modal-overlay {
         align-items: center;
         justify-content: center;
     }

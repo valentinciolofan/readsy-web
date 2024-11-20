@@ -98,7 +98,7 @@ const AuthModal = ({ showAuthModal, closeModal }) => {
   return (
     <>
       {showAuthModal && (
-        <div className="modal-auth-overlay" onClick={handleOutsideClick}>
+        <div className="modal-overlay" onClick={handleOutsideClick}>
           {changeModal === "signIn" ? (
             <div className={`auth-form ${animationClass}`} id="sign-in" key="sign-in">
               <div className="modal-header">

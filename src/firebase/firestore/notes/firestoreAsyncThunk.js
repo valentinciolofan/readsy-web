@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { collection, addDoc, getDoc, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc, getDocs, query, where, doc, updateDoc, writeBatch } from "firebase/firestore";
 import { db } from '../../firebaseConfig';
 
 // Fetch notes
@@ -72,15 +72,15 @@ export const deleteUserNotes = createAsyncThunk(
     'notes/deleteUserNotes',
     async (noteIds, { rejectWithValue }) => {
         try {
-            const batch = db.batch();
+            const batch = writeBatch(db); // Correct usage of batch
             noteIds.forEach((noteId) => {
-                const noteRef = db.collection('notes').doc(noteId);
+                const noteRef = doc(db, 'notes', noteId); // Correct doc reference
                 batch.delete(noteRef);
             });
-            await batch.commit();
-            return noteIds;
+            await batch.commit(); // Commit the batch
+            return noteIds; // Return the deleted note IDs for the reducer
         } catch (error) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.message); // Handle errors
         }
     }
 );

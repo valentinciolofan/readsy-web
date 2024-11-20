@@ -6,7 +6,7 @@ const DeleteNotesModal = () => {
 
   // Handle click outside the modal to trigger closing animation
   const handleOutsideClick = (e) => {
-    const targetModal = e.target.closest(".import-file-modal-container");
+    const targetModal = e.target.closest("modal-overlay");
 
     // Set animation class based on screen size for closing animation
     if (!targetModal) {
@@ -19,7 +19,7 @@ const DeleteNotesModal = () => {
       // After the animation, close the modal
       setTimeout(() => {
         closeModal(false);
-      }, 300); 
+      }, 300);
     }
   };
 
@@ -34,7 +34,7 @@ const DeleteNotesModal = () => {
 
       setTimeout(() => {
         closeModal(false);
-      }, 300); 
+      }, 300);
     }
   };
 
@@ -55,53 +55,49 @@ const DeleteNotesModal = () => {
   const handleImportFiles = () => {
     setFiles(true);
     if (window.innerWidth <= 768) {
-        setAnimationClass("moveOutBottom");
-      } else {
-        setAnimationClass("fadeOut");
-      }
-      setTimeout(() => {
-        closeModal(false);
-      }, 300); 
+      setAnimationClass("moveOutBottom");
+    } else {
+      setAnimationClass("fadeOut");
+    }
+    setTimeout(() => {
+      closeModal(false);
+    }, 300);
 
   }
   return (
     // showModal && (
-      <div
-        className="import-file-modal-overlay"
-        onClick={handleOutsideClick}
-        // style={{ display: showModal ? "flex" : "none" }}
-      >
-        <div className={`import-file-modal-container ${animationClass}`}>
-          <div className="import-file-modal">
-            <h5>Confirm delete</h5>
-            <p className="font-small">Are you sure you want to delete 34 notes?</p>
-            <button 
-            onClick={handleImportFiles}
-            type="button" 
-            className="btn-import-file btn-primary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.5em"
-                height="1.5em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="#2d2d2d"
-                  fillRule="evenodd"
-                  d="M7.172 13H6a3 3 0 1 1 0-6c.28 0 .42 0 .517-.02c.298-.06.44-.151.616-.399c.058-.08.14-.262.303-.626a5.001 5.001 0 0 1 9.128 0c.163.364.245.545.303.626c.177.248.318.34.616.4C17.581 7 17.721 7 18 7a3 3 0 1 1 0 6h-1.172l-3.414-3.414L12 8.172l-1.414 1.414z"
-                  clipRule="evenodd"
-                ></path>
-                <path
-                  fill="#2d2d2d"
-                  d="m12 12l-.707-.707l.707-.707l.707.707zm1 9a1 1 0 1 1-2 0zm-5.707-5.707l4-4l1.414 1.414l-4 4zm5.414-4l4 4l-1.414 1.414l-4-4zM13 12v9h-2v-9z"
-                ></path>
-              </svg>
-            </button>
-          </div>
+    <div
+      className="modal-overlay"
+      onClick={handleOutsideClick}
+    // style={{ display: showModal ? "flex" : "none" }}
+    >
+      <div className={`confirm-delete-modal ${animationClass}`}>
+        <div className="modal-message">
+          <h5>Confirm delete</h5>
+          <p className="font-small">Are you sure you want to delete 34 notes?</p>
+        </div>
+
+        <div className="confirm-delete-actions">
+          <button
+            type="button"
+            onClick={() => console.log('check')}
+            id="deleteNotesBtn"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeDasharray={24} strokeDashoffset={24} strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 11l6 6l10 -10"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="24;0"></animate></path></svg>
+          </button>
+          <button
+            type="button"
+            onClick={() => console.log('close')}
+            id="cancelDeleteNotesBtn"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z"></path></svg>
+          </button>
+
         </div>
       </div>
-    )
-//   );
+    </div>
+  )
+  //   );
 };
 
 export default DeleteNotesModal;

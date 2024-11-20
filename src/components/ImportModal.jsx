@@ -67,7 +67,7 @@ const ImportModal = ({ setFiles, showModal, closeModal }) => {
   return (
     showModal && (
       <div
-        className="import-file-modal-overlay"
+        className="modal-overlay"
         onClick={handleOutsideClick}
         style={{ display: showModal ? "flex" : "none" }}
       >
