@@ -115,6 +115,7 @@ div.container>div.hero-section-col:last-child {
 .hidden {
     display: none;
 }
+
 .modal-overlay {
     z-index: 1000;
     background: rgba(0, 0, 0, 0.5);
@@ -334,6 +335,7 @@ label.remember-me-label {
     text-align: center;
     gap: 30px;
 }
+
 .import-file-modal-container {
     z-index: 1001;
     background-color: #2D2D2D;
@@ -553,6 +555,7 @@ label.remember-me-label {
 .note-span-two {
     grid-column: span 2;
 }
+
 .note-card-header {
     display: flex;
     justify-content: space-between;
@@ -560,6 +563,7 @@ label.remember-me-label {
     position: relative;
     height: 24px;
 }
+
 .note-card {
     min-width: 150px;
     max-width: 200px;
@@ -571,6 +575,7 @@ label.remember-me-label {
     cursor: pointer;
     user-select: none;
 }
+
 .note-card-btn {
     background-color: transparent;
     border: none;
@@ -582,21 +587,24 @@ label.remember-me-label {
     justify-content: center;
     align-items: center;
 }
+
 .note-card-checkbox {
     position: absolute;
     opacity: 0;
     height: 24px;
     width: 24px;
     cursor: pointer;
-  }
-  .note-card-checkbox {
+}
+
+.note-card-checkbox {
     position: absolute;
     opacity: 0;
     height: 24px;
     width: 24px;
     cursor: pointer;
-  }
-  .note-card-checkmark {
+}
+
+.note-card-checkmark {
     position: relative;
     height: 24px;
     width: 24px;
@@ -604,14 +612,14 @@ label.remember-me-label {
     border: 1px solid #909090;
     display: inline-block;
     border-radius: 4px;
-  }
-  
-  .note-card-checkbox:checked + .note-card-checkmark {
+}
+
+.note-card-checkbox:checked+.note-card-checkmark {
     background-color: #000000;
     border: 1px solid #000000;
 }
-  
-  .note-card-checkmark:after {
+
+.note-card-checkmark:after {
     content: "";
     position: absolute;
     display: none;
@@ -622,16 +630,17 @@ label.remember-me-label {
     border: solid rgb(255, 255, 255);
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
-  }
-  
-  .note-card-checkbox:checked + .note-card-checkmark:after {
+}
+
+.note-card-checkbox:checked+.note-card-checkmark:after {
     display: block;
-  }
-  
-  
+}
+
+
 .note-card p {
     color: #000000 !important;
 }
+
 .green {
     background-color: #C3FF45;
     border-radius: 40px;
@@ -659,11 +668,13 @@ label.remember-me-label {
 .cream {
     background-color: #F5EBC7;
 }
+
 .modal-message {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
+
 .confirm-delete-modal {
     padding: 20px 40px;
     background-color: #2D2D2D;
@@ -672,16 +683,19 @@ label.remember-me-label {
     flex-direction: column;
     gap: 21px;
 }
+
 .confirm-delete-actions {
     display: flex;
     justify-content: center;
     gap: 16px;
 }
+
 .confirm-delete-actions::first-child {
     padding: 5px;
     border-radius: 100%;
     border: none;
 }
+
 #deleteNotesBtn {
     padding: 10px;
     border: none;
@@ -692,6 +706,7 @@ label.remember-me-label {
     align-items: center;
     cursor: pointer;
 }
+
 #cancelDeleteNotesBtn {
     cursor: pointer;
     padding: 10px;
@@ -702,9 +717,12 @@ label.remember-me-label {
     justify-content: center;
     align-items: center;
 }
-#cancelDeleteNotesBtn:hover, #deleteNotesBtn:hover {
+
+#cancelDeleteNotesBtn:hover,
+#deleteNotesBtn:hover {
     opacity: 0.9;
 }
+
 /* ########## note styling ##### */
 .note-container {
     background-color: #F5EBC7;
@@ -716,12 +734,30 @@ label.remember-me-label {
 .note-header {
     display: flex;
     align-items: center;
+    gap: 32px;
 }
+
 .note-title {
     font-size: 1.5em;
     border: none;
     background-color: transparent;
     outline: none;
+    margin-right: auto;
+    padding-right: 50px;
+    width: 350px;
+}
+
+.note-header label {
+    position: relative;
+}
+
+.title-char-limit-counter {
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+    pointer-events: none;
 }
 
 .note-wrapper {
@@ -729,12 +765,7 @@ label.remember-me-label {
     flex-direction: column;
     gap: 20px;
     height: 100%;
-    
-}
 
-.note-header {
-    display: flex;
-    gap: 32px;
 }
 
 .note-container h1,
@@ -753,11 +784,13 @@ p {
 .btnBack:hover {
     cursor: pointer;
 }
+
 .note-editor {
     cursor: text;
     padding: 16px;
     flex-grow: 1;
 }
+
 .note-toolbar {
     position: absolute;
     z-index: 50;
@@ -768,6 +801,7 @@ p {
     justify-content: center;
     align-items: center;
 }
+
 .note-toolbar button {
     border: none;
     background-color: transparent;
@@ -776,6 +810,7 @@ p {
     pointer-events: fill;
     padding: 5px;
 }
+
 .note-toolbar button.active {
     color: #ffffff
 }
@@ -968,7 +1003,6 @@ p {
     color: #ffffff;
 }
 
-
 .user-message-to-readsy {
     background-color: #2d2d2d;
     padding: 10px;
@@ -997,8 +1031,6 @@ p {
     list-style-position: inside;
 }
 
-
-
 .readsy-input-box {
     background-color: #2d2d2d;
     color: #909090;
@@ -1016,11 +1048,10 @@ p {
     cursor: pointer;
 }
 
-
 /* ###########
     ALERT MODAL STYLING
 ########### */
-.alert-overlay { 
+.alert-overlay {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -1030,6 +1061,7 @@ p {
     justify-content: center;
     z-index: 999;
 }
+
 .alert-box {
     margin-top: 30px;
     max-width: 400px;
@@ -1044,15 +1076,18 @@ p {
     justify-content: space-between;
     align-items: center;
 }
+
 .alert-box-content {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 14px;
 }
+
 #alertMessage {
     color: #D53232;
 }
+
 .alert-box-icon {
     background-color: #D53232;
     border: 1px solid #c8303079;
@@ -1061,6 +1096,7 @@ p {
     padding: 10px;
     color: #ffffff;
 }
+
 .btn-close-alert {
     background-color: transparent;
     padding: 10px;
@@ -1072,6 +1108,7 @@ p {
     align-items: center;
     cursor: pointer;
 }
+
 .btn-close-alert:hover {
     color: #ffffff;
 }

@@ -1,11 +1,22 @@
 import React, { useRef, useEffect } from 'react';
 
 
-const NoteHeader = ({ noteTitleRef, noteTitle,  setNoteTitle, noteContent, closeNote }) => {
+const NoteHeader = ({ noteTitleRef, noteTitle, setNoteTitle, noteContent, closeNote }) => {
+    const titleCharactersLimit = useRef(null);
 
     const handleNoteTitle = (e) => {
-        const title = e;
-        setNoteTitle(e);
+        // Check if the title is > 50 characters
+        const titleLength = e.length;
+
+        // Update the character counter
+        titleCharactersLimit.current.textContent = titleLength ? `${titleLength}/30` : `0/30`;
+
+        if (titleLength <= 30) {
+            setNoteTitle(e);
+
+        } else {
+            // Stop updating the title... and make character limit scale or another color red smth...
+        }
     }
 
     const goBack = () => {
@@ -21,8 +32,10 @@ const NoteHeader = ({ noteTitleRef, noteTitle,  setNoteTitle, noteContent, close
         // If there is no title, make sure the title gets focused
         if (!noteTitleRef.current.value) {
             noteTitleRef.current.focus();
-        } 
+        }
     }, [noteTitle])
+
+
 
     return (
         <div className="note-header">
@@ -33,14 +46,19 @@ const NoteHeader = ({ noteTitleRef, noteTitle,  setNoteTitle, noteContent, close
                 </svg>
             </button>
             {/* The note title goes here  */}
-            <input
-                ref={noteTitleRef}
-                contentEditable="true"
-                className="note-title"
-                value={noteTitle}
-                placeholder={!noteTitle ? "Type the title here..." : ""}
-                onChange={(e) => handleNoteTitle((e.target.value))}
-            />
+            <label>
+                <input
+                    ref={noteTitleRef}
+                    contentEditable="true"
+                    className="note-title"
+                    value={noteTitle}
+                    placeholder={!noteTitle ? "Type the title here..." : ""}
+                    onChange={(e) => handleNoteTitle((e.target.value))}
+                    maxLength={30}
+                />
+                <span ref={titleCharactersLimit} className='title-char-limit-counter'>0/30</span>
+            </label>
+
         </div>
     );
 }
