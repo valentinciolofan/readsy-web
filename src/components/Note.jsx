@@ -24,9 +24,13 @@ const Note = () => {
         // Get note id if the note already exists
         const noteId = location.state?.note?.id;
 
-        // Convert the noteContent to editor content and get the 
-        const noteDescription = convertFromRaw(noteContent).getPlainText();
+        // Convert the noteContent to editor content and get the plain text
+        let noteDescription = '';
         
+        if (noteContent !== null) {
+            noteDescription = convertFromRaw(noteContent).getPlainText() || '';
+        }
+        console.log(noteDescription);
         // Create note object 
         const note = {
             title: noteTitle || 'New Note',
@@ -36,8 +40,8 @@ const Note = () => {
 
         // If there is a note id, edit the actual note, else create a new note.
         if (noteId) {
-            dispatch(editUserNote({ noteId, note}));
-        } else {
+            dispatch(editUserNote({ noteId, note }));
+        } else if (noteContent !== null || noteTitle !== '') {
             dispatch(addUserNote({ userId, note }));
         }
 

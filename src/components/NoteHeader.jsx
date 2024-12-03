@@ -21,11 +21,6 @@ const NoteHeader = ({ noteTitleRef, noteTitle, setNoteTitle, noteContent, closeN
 
     const goBack = () => {
         closeNote();
-
-        if (!noteContent) {
-
-        } else {
-        }
     };
 
     useEffect(() => {

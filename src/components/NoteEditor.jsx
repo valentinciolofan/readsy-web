@@ -7,6 +7,7 @@ import createInlineToolbarPlugin from '@draft-js-plugins/inline-toolbar';
 // import editorStyles from './editorStyles.module.css';
 import '@draft-js-plugins/static-toolbar/lib/plugin.css';
 import '@draft-js-plugins/inline-toolbar/lib/plugin.css';
+import 'draft-js/dist/Draft.css';
 import {
     ItalicButton,
     BoldButton,
@@ -55,6 +56,7 @@ const NoteEditor = ({ noteContent, loadNoteContent, setNoteContent }) => {
                 onChange={setEditorState}
                 onBlur={updateNoteContent}
                 plugins={plugins}
+                placeholder='Type here ...'
             />
             <InlineToolbar className='note-editor-toolbar'>
                 {(externalProps) => (
