@@ -62,13 +62,11 @@ const Notes = () => {
         setDeleteNotes(prev =>
             prev.includes(noteId) ? prev.filter(id => id !== noteId) : [...prev, noteId]
         );
-        console.log(deleteNotes);
     };
 
     // Select all notes when in delete mode
     const handleSelectAll = () => {
         const allNotesId = userNotes.map(note => note.id);
-        console.log(allNotesId)
         setDeleteNotes(allNotesId);
     };
 

@@ -737,6 +737,11 @@ label.remember-me-label {
     gap: 32px;
 }
 
+.note-header label {
+    position: relative;
+    color: #909090
+}
+
 .note-title {
     font-size: 1.5em;
     border: none;
@@ -747,8 +752,8 @@ label.remember-me-label {
     width: 350px;
 }
 
-.note-header label {
-    position: relative;
+.note-title::placeholder {
+    color: #909090;
 }
 
 .title-char-limit-counter {
@@ -758,7 +763,23 @@ label.remember-me-label {
     transform: translateY(-50%);
     margin-left: 10px;
     pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    display: inline-block;
+    vertical-align: middle;
 }
+
+.note-title:focus+.title-char-limit-counter {
+    visibility: visible;
+    opacity: 1;
+}
+
+.title-char-limit-counter.max-length-attempt {
+    color: #CF2525;
+    animation: shakeCharLimit 0.2s ease-in-out;
+}
+
 
 .note-wrapper {
     display: flex;
@@ -789,6 +810,10 @@ p {
     cursor: text;
     padding: 16px;
     flex-grow: 1;
+}
+
+.note-editor .public-DraftEditorPlaceholder-root {
+    color: #909090;
 }
 
 .note-toolbar {
@@ -1114,6 +1139,29 @@ p {
 }
 
 /* animations */
+@keyframes shakeCharLimit {
+    0% {
+        transform: translate(-2px, -50%);
+    }
+
+    25% {
+        transform: translate(0px, -50%);
+    }
+
+    50% {
+        transform: translate(2px, -50%);
+    }
+
+    75% {
+        transform: translate(-2px, -50%);
+    }
+
+    100% {
+        transform: translate(0, -50%);
+    }
+}
+
+
 @keyframes fadeIn {
     from {
         opacity: 0;

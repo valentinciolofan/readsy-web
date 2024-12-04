@@ -19,6 +19,39 @@ const NoteHeader = ({ noteTitleRef, noteTitle, setNoteTitle, noteContent, closeN
         }
     }
 
+    const handleKeyPress = (e) => {
+        // Check if the user is trying to type (exclude navigation keys and shortcuts)
+        const nonTypingKeys = [
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End",
+            "Tab"
+        ];
+    
+        const isModifierPressed = e.ctrlKey || e.metaKey || e.altKey; // Exclude modifier actions
+        const isTypingKey = !nonTypingKeys.includes(e.key) && !isModifierPressed;
+    
+        if (noteTitle.length >= 30 && isTypingKey && e.key !== "Backspace") {
+            e.preventDefault(); // Block additional typing
+            triggerShakeEffect(); // Trigger visual effect
+        }
+    };
+    
+
+    const triggerShakeEffect = () => {
+        const charLimitSpan = titleCharactersLimit.current;
+        if (charLimitSpan) {
+            charLimitSpan.classList.add("max-length-attempt");
+            setTimeout(() => {
+                charLimitSpan.classList.remove("max-length-attempt");
+            }, 300); // Remove effect after animation
+        }
+    };
+
+
     const goBack = () => {
         closeNote();
     };
@@ -28,6 +61,7 @@ const NoteHeader = ({ noteTitleRef, noteTitle, setNoteTitle, noteContent, closeN
         if (!noteTitleRef.current.value) {
             noteTitleRef.current.focus();
         }
+
     }, [noteTitle])
 
 
@@ -40,7 +74,7 @@ const NoteHeader = ({ noteTitleRef, noteTitle, setNoteTitle, noteContent, closeN
                     <path fill="currentColor" d="m7.825 13l5.6 5.6L12 20l-8-8l8-8l1.425 1.4l-5.6 5.6H20v2z"></path>
                 </svg>
             </button>
-            {/* The note title goes here  */}
+            {/* The note title goes here */}
             <label>
                 <input
                     ref={noteTitleRef}
@@ -49,9 +83,15 @@ const NoteHeader = ({ noteTitleRef, noteTitle, setNoteTitle, noteContent, closeN
                     value={noteTitle}
                     placeholder={!noteTitle ? "Type the title here..." : ""}
                     onChange={(e) => handleNoteTitle((e.target.value))}
+                    onKeyDown={handleKeyPress}
                     maxLength={30}
                 />
-                <span ref={titleCharactersLimit} className='title-char-limit-counter'>0/30</span>
+                <span
+                    ref={titleCharactersLimit}
+                    className="title-char-limit-counter"
+                    >
+                    {noteTitle.length}/30
+                </span>
             </label>
         </div>
     );
