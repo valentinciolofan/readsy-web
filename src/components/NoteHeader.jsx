@@ -53,7 +53,6 @@ const NoteHeader = ({ noteTitleRef, noteTitle, setNoteTitle, noteContent, closeN
                 />
                 <span ref={titleCharactersLimit} className='title-char-limit-counter'>0/30</span>
             </label>
-
         </div>
     );
 }

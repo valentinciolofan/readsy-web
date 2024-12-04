@@ -17,8 +17,6 @@ const Notes = () => {
     const { userNotes, loading, error } = useSelector(state => state.notes);
     const [deleteMode, setDeleteMode] = useState(false);
     const [deleteNotes, setDeleteNotes] = useState([]);
-    const [isChecked, setIsChecked] = useState(false);
-    const [checkedNotes, setCheckedNotes] = useState({});
 
     useEffect(() => {
         dispatch(fetchUserNotes(uid));
@@ -43,6 +41,7 @@ const Notes = () => {
     const addNoteToFav = (event) => {
         event.stopPropagation();
         console.log('Added to favorite');
+
     }
     // Turn on/off delete notes mode
     const handleDeleteMode = () => {
@@ -50,7 +49,7 @@ const Notes = () => {
     }
     // Delete notes
     const handleDeleteNotes = () => {
-        const noteIds = deleteNotes; 
+        const noteIds = deleteNotes;
         try {
             const result = dispatch(deleteUserNotes(noteIds)).unwrap();
             console.log('Notes deleted successfully:', result);
@@ -59,11 +58,26 @@ const Notes = () => {
         }
     };
 
-    const handleSelectedNotes = (noteIds) => {
-        setDeleteNotes([...deleteNotes, noteIds]);
+    const handleSelectedNotes = (noteId) => {
+        setDeleteNotes(prev =>
+            prev.includes(noteId) ? prev.filter(id => id !== noteId) : [...prev, noteId]
+        );
         console.log(deleteNotes);
     };
 
+    // Select all notes when in delete mode
+    const handleSelectAll = () => {
+        const allNotesId = userNotes.map(note => note.id);
+        console.log(allNotesId)
+        setDeleteNotes(allNotesId);
+    };
+
+    // Deselect all notes when in delete mode 
+    const handleDeselectAll = () => {
+        const allNotesId = userNotes.map(note => note.id);
+        setDeleteNotes([]);
+
+    };
 
     // useEffect(() => {
     //     window.addEventListener('click', (e) => {
@@ -86,7 +100,6 @@ const Notes = () => {
                                 className="search-box" />
                         </div>
                         <div>
-
                             <button
                                 type="button"
                                 className="createNote btn-primary rounded"
@@ -104,7 +117,7 @@ const Notes = () => {
                     <div className="all-notes-container">
                         {userNotes.map((note, i) => (
                             <label
-                                key={note.id} // Adding a unique key prop here
+                                key={note.id} 
                                 className={`note-card ${colorClasses[i % colorClasses.length]}`}
                                 onClick={() => handleOpenNote(note)}
                             >
@@ -116,6 +129,7 @@ const Notes = () => {
                                                 type="checkbox"
                                                 className="note-card-checkbox"
                                                 value={note.id}
+                                                checked={deleteNotes.includes(note.id)}
                                                 onChange={() => handleSelectedNotes(note.id)}
                                             />
                                             <span className="note-card-checkmark"></span>
@@ -151,6 +165,19 @@ const Notes = () => {
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"></path></svg>
                             </button>
+                            <button 
+                            type="button"
+                            onClick={handleSelectAll}
+                            >
+                                Select All
+                            </button>
+                            <button 
+                            type="button"
+                            onClick={handleDeselectAll}
+                            >
+                                Deselect All
+                            </button>
+
                         </div>
                         :
                         ''
