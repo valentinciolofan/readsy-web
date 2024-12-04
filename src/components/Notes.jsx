@@ -38,10 +38,18 @@ const Notes = () => {
         }
     };
     // Add to note to favorite
-    const addNoteToFav = (event) => {
-        event.stopPropagation();
-        console.log('Added to favorite');
+    const addNoteToFav = (e, noteIndex) => {
+        e.stopPropagation();
+        // Get the note at the given index
+        const note = { ...userNotes[noteIndex] }; // Clone the note to avoid direct mutation
+        const noteId = note.id;
+        // Toggle the favorite property
+        note.favorite = !note.favorite;
 
+        console.log(noteId, note);
+        dispatch(editUserNote({ noteId, note }));
+
+        console.log('Added to favorite');
     }
     // Turn on/off delete notes mode
     const handleDeleteMode = () => {
@@ -115,7 +123,7 @@ const Notes = () => {
                     <div className="all-notes-container">
                         {userNotes.map((note, i) => (
                             <label
-                                key={note.id} 
+                                key={note.id}
                                 className={`note-card ${colorClasses[i % colorClasses.length]}`}
                                 onClick={() => handleOpenNote(note)}
                             >
@@ -133,12 +141,13 @@ const Notes = () => {
                                             <span className="note-card-checkmark"></span>
                                         </>
                                         :
+                                        // Add to favorite button
                                         <button
                                             type="button"
-                                            onClick={addNoteToFav}
+                                            onClick={(e) => addNoteToFav(e, i)}
                                             className="note-card-btn favorite"
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="transparent" stroke="currentColor" strokeWidth={1} d="m4.45 13.908l6.953 6.531c.24.225.36.338.5.366a.5.5 0 0 0 .193 0c.142-.028.261-.14.5-.366l6.953-6.53a5.203 5.203 0 0 0 .549-6.983l-.31-.399c-1.968-2.536-5.918-2.111-7.301.787a.54.54 0 0 1-.974 0C10.13 4.416 6.18 3.99 4.212 6.527l-.31.4a5.203 5.203 0 0 0 .549 6.981Z"></path></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill={note.favorite ? '#000' : 'none'} stroke={note.favorite ? '#000' : 'currentColor'} strokeWidth={1} d="m4.45 13.908l6.953 6.531c.24.225.36.338.5.366a.5.5 0 0 0 .193 0c.142-.028.261-.14.5-.366l6.953-6.53a5.203 5.203 0 0 0 .549-6.983l-.31-.399c-1.968-2.536-5.918-2.111-7.301.787a.54.54 0 0 1-.974 0C10.13 4.416 6.18 3.99 4.212 6.527l-.31.4a5.203 5.203 0 0 0 .549 6.981Z"></path></svg>
                                         </button>
                                     }
                                 </div>
@@ -163,15 +172,15 @@ const Notes = () => {
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"></path></svg>
                             </button>
-                            <button 
-                            type="button"
-                            onClick={handleSelectAll}
+                            <button
+                                type="button"
+                                onClick={handleSelectAll}
                             >
                                 Select All
                             </button>
-                            <button 
-                            type="button"
-                            onClick={handleDeselectAll}
+                            <button
+                                type="button"
+                                onClick={handleDeselectAll}
                             >
                                 Deselect All
                             </button>

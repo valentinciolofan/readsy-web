@@ -35,7 +35,8 @@ const Note = () => {
         const note = {
             title: noteTitle || 'New Note',
             content: noteContent || '',
-            description: noteDescription.split(' ').slice(0, 13).join(' ')
+            description: noteDescription.split(' ').slice(0, 13).join(' '),
+            favorite: false
         }
 
         // If there is a note id, edit the actual note, else create a new note.
