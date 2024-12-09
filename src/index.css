@@ -134,7 +134,7 @@ button.nav-link.active {
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 }
-.btn-primary:hover {
+.btn-primary:hover, .btn-warning:hover {
     opacity: 0.8;
 }
 .btn-primary.full {
@@ -149,6 +149,28 @@ button.nav-link.active {
 }
 .btn-primary.full:hover {
     opacity: 0.8;
+}
+.btn-primary.rounded {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background-color: #4CD6FF;
+    color: #000000;
+    border-radius: 50%;
+    border: none;
+}
+.btn-warning.rounded {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background-color: #CF2525;
+    color: #ffffff;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
 }
 body {
     display: flex;

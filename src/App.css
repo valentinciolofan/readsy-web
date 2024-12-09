@@ -727,6 +727,16 @@ label.remember-me-label {
     opacity: 0.9;
 }
 
+.delete-mode-modal {
+    position: fixed;
+    bottom: 5%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
 /* ########## note styling ##### */
 .note-container {
     background-color: #F5EBC7;
