@@ -18,7 +18,7 @@ const Notes = () => {
     const { userNotes, loading, error } = useSelector(state => state.notes);
     const [deleteMode, setDeleteMode] = useState(false);
     const [deleteNotes, setDeleteNotes] = useState([]);
-
+    console.log(userNotes);
     useEffect(() => {
         // Fetch user notes
         dispatch(fetchUserNotes(uid));
@@ -120,16 +120,7 @@ const Notes = () => {
             const allNotesId = userNotes.map(note => note.id);
             setDeleteNotes([]);
         }
-
     };
-
-
-
-    // useEffect(() => {
-    //     window.addEventListener('click', (e) => {
-    //         console.log(e.target, 'event');
-    //     })
-    // }, [])
 
     return (
         <>
@@ -139,12 +130,18 @@ const Notes = () => {
                     <h3>My Notes</h3>
                     <div className="search-and-import">
                         {deleteMode ? (
-                            <button
-                                type="button"
-                                onClick={handleSelectAll}
-                            >
-                                Select All
-                            </button>
+                            <label 
+                            for="select-all-notes">
+                                <input
+                                    id="select-all-notes"
+                                    type="checkbox"
+                                    className="custom-checkbox"
+                                    onChange={handleSelectAll}
+                                />
+                                <span className="checkbox-custom-checkmark"></span>
+                                Select all
+                            </label>
+
                         ) : (
                             <>
                                 <div className="search-box-container">
@@ -158,7 +155,7 @@ const Notes = () => {
                                     <button
                                         type="button"
                                         className="createNote btn-primary rounded"
-                                        style={{ display: userNotes ? "block" : "none" }}
+                                        style={{ visibility: userNotes ? "visible" : "hidden" }}
                                         onClick={handleAddNote}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"></path></svg>
@@ -189,12 +186,12 @@ const Notes = () => {
                                             <>
                                                 <input
                                                     type="checkbox"
-                                                    className="note-card-checkbox"
+                                                    className="custom-checkbox"
                                                     value={note.id}
                                                     checked={deleteNotes.includes(note.id)}
                                                     onChange={() => handleSelectedNotes(note.id)}
                                                 />
-                                                <span className="note-card-checkmark"></span>
+                                                <span className="checkbox-custom-checkmark"></span>
                                             </>
                                             :
                                             // Add to favorite button
@@ -203,7 +200,7 @@ const Notes = () => {
                                                 onClick={(e) => addNoteToFav(e, i)}
                                                 className="note-card-btn favorite"
                                             >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill={note.favorite ? '#000' : 'none'} stroke={note.favorite ? '#000' : 'currentColor'} strokeWidth={1} d="m4.45 13.908l6.953 6.531c.24.225.36.338.5.366a.5.5 0 0 0 .193 0c.142-.028.261-.14.5-.366l6.953-6.53a5.203 5.203 0 0 0 .549-6.983l-.31-.399c-1.968-2.536-5.918-2.111-7.301.787a.54.54 0 0 1-.974 0C10.13 4.416 6.18 3.99 4.212 6.527l-.31.4a5.203 5.203 0 0 0 .549 6.981Z"></path></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill={note.favorite ? '#000' : 'none'} stroke={note.favorite ? '#000' : 'currentColor'} strokeWidth={1} d="m4.45 13.908l6.953 6.531c.24.225.36.338.5.366a.5.5 0 0 0 .193 0c.142-.028.261-.14.5-.366l6.953-6.53a5.203 5.203 0 0 0 .549-6.983l-.31-.399c-1.968-2.536-5.918-2.111-7.301.787a.54.54 0 0 1-.974 0C10.13 4.416 6.18 3.99 4.212 6.527l-.31.4a5.203 5.203 0 0 0 .549 6.981Z"></path></svg>
                                             </button>
                                         }
                                     </div>

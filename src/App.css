@@ -384,6 +384,16 @@ label.remember-me-label {
 .search-and-import {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    min-height: 70px;
+}
+.search-and-import label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+#select-all-notes:checked+.checkbox-custom-checkmark {
+    border: 1px solid #909090;
 }
 
 .search-box-container {
@@ -591,8 +601,7 @@ label.remember-me-label {
     justify-content: center;
     align-items: center;
 }
-
-.note-card-checkbox {
+.custom-checkbox {
     position: absolute;
     opacity: 0;
     height: 24px;
@@ -600,15 +609,7 @@ label.remember-me-label {
     cursor: pointer;
 }
 
-.note-card-checkbox {
-    position: absolute;
-    opacity: 0;
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
-}
-
-.note-card-checkmark {
+.checkbox-custom-checkmark {
     position: relative;
     height: 24px;
     width: 24px;
@@ -618,12 +619,12 @@ label.remember-me-label {
     border-radius: 4px;
 }
 
-.note-card-checkbox:checked+.note-card-checkmark {
+.custom-checkbox:checked+.checkbox-custom-checkmark {
     background-color: #000000;
     border: 1px solid #000000;
 }
 
-.note-card-checkmark:after {
+.checkbox-custom-checkmark:after {
     content: "";
     position: absolute;
     display: none;
@@ -636,7 +637,7 @@ label.remember-me-label {
     transform: rotate(45deg);
 }
 
-.note-card-checkbox:checked+.note-card-checkmark:after {
+.custom-checkbox:checked+.checkbox-custom-checkmark:after {
     display: block;
 }
 
@@ -672,7 +673,6 @@ label.remember-me-label {
 .cream {
     background-color: #F5EBC7;
 }
-
 .modal-message {
     display: flex;
     flex-direction: column;

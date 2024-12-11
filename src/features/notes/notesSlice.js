@@ -31,7 +31,7 @@ const notesSlice = createSlice({
                 state.error = action.payload;
             })
             .addCase(addUserNote.fulfilled, (state, action) => {
-                state.userNotes.push(action.payload);
+                // state.userNotes.push(action.payload);
             })
             .addCase(editUserNote.fulfilled, (state, action) => {
                 console.log('Action payload:', action.payload); // Check payload structure

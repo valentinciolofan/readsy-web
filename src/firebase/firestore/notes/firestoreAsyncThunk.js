@@ -7,7 +7,6 @@ export const fetchUserNotes = createAsyncThunk(
     'notes/fetchUserNotes',
     async (userId, { rejectWithValue }) => {
         try {
-            console.log("User ID:", userId);
             const q = query(collection(db, "notes"), where("userId", "==", userId));
             const querySnapshot = await getDocs(q);
 
@@ -16,7 +15,6 @@ export const fetchUserNotes = createAsyncThunk(
                 notes.push({ id: doc.id, ...doc.data() });
             });
 
-            console.log("Fetched notes:", notes); // Log all fetched notes for debugging
             return notes;
         } catch (error) {
             console.error("Error fetching notes:", error.message);
