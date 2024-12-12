@@ -6,6 +6,7 @@ import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../f
 import Note from "./Note";
 import DeleteNotesModal from "./DeleteNotesModal";
 import NoteCardSkeleton from "./NoteCardSkeleton";
+import NotesMenu from "./NotesMenu";
 
 const colorClasses = ["green", "blue", "orange", "purple"];
 
@@ -21,7 +22,7 @@ const Notes = () => {
     const [deleteNotes, setDeleteNotes] = useState([]);
     const [isDeleting, setIsDeleting] = useState(true);
     const [loadingMode, setLoadingMode] = useState(false);
-    console.log(userNotes);
+
     useEffect(() => {
         // Fetch user notes
         dispatch(fetchUserNotes(uid));
@@ -158,15 +159,7 @@ const Notes = () => {
                                         className="search-box" />
                                 </div>
                                 <div>
-                                    <button
-                                        type="button"
-                                        className="ote btn-primary rounded"
-                                        style={{ visibility: userNotes ? "visible" : "hidden" }}
-                                        onClick={handleAddNote}
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"></path></svg>
-                                    </button>
-
+                                    <NotesMenu onDelete={handleDeleteMode} />
                                 </div>
                             </>
                         )}
@@ -225,7 +218,10 @@ const Notes = () => {
                         deleteMode={deleteMode}
                         deleteNotes={deleteNotes}
                         handleDeleteMode={handleDeleteMode}
+                        handleAddNote={handleAddNote}
                     />
+
+                    
                 </div>
             ) : (
                 <div className="dashboard-zero-files">

@@ -793,6 +793,57 @@ label.remember-me-label {
     justify-content: center;
     gap: 14px;
 }
+.create-new-element {
+    position: absolute;
+    bottom: 5%;
+    right: 0;
+    padding: 20px;
+}
+/* Delete mode dropdown */
+/* Container styling */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* SVG button styling */
+.dropdown-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+    position: absolute;
+    top: 30px; /* Adjust based on your layout */
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 120px;
+    overflow: hidden;
+}
+
+/* Dropdown item styling */
+.dropdown-item {
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background: #f5f5f5;
+}
+
+
 
 /* ########## note styling ##### */
 .note-container {

@@ -4,7 +4,7 @@ import { deleteUserNotes } from '../firebase/firestore/notes/firestoreAsyncThunk
 
 
 
-const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode }) => {
+const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAddNote }) => {
   const dispatch = useDispatch(state => state.notes.userNotes);
   const [showModal, setShowModal] = useState(false);
 
@@ -98,7 +98,7 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode }) => {
 
   return (
     <>
-      {deleteMode && (
+      {deleteMode ? (
         <div className="delete-mode-modal">
           {/* <DeleteNotesModal /> */}
           <button
@@ -115,7 +115,17 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode }) => {
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"></path></svg>
           </button>
-
+        </div>
+      ) : (
+        <div className="create-new-element">
+          <button
+            type="button"
+            className="note btn-primary rounded"
+          style={{ visibility: deleteMode ? "hidden" : "visible" }}
+          onClick={handleAddNote}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"></path></svg>
+          </button>
         </div>
       )}
       {showModal && (
@@ -146,10 +156,12 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode }) => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z"></path></svg>
               </button>
 
+
             </div>
           </div>
         </div>
       )}
+
     </>
   )
 };
