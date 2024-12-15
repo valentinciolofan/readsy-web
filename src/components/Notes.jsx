@@ -21,13 +21,15 @@ const Notes = () => {
     const [deleteMode, setDeleteMode] = useState(false);
     const [deleteNotes, setDeleteNotes] = useState([]);
     const [isDeleting, setIsDeleting] = useState(true);
-    const [loadingMode, setLoadingMode] = useState(false);
+    const [isFetched, setIsFetched] = useState(false);
 
     useEffect(() => {
         // Fetch user notes
-        dispatch(fetchUserNotes(uid));
-        setLoadingMode(true);
-        setTimeout(() => setLoadingMode(false), 5000);
+        const fetchNotes = async () => {
+            await dispatch(fetchUserNotes(uid));
+            setIsFetched(true); // Mark fetch as complete
+        };
+        fetchNotes();
 
         // Check if the user is on a mobile device
         if (!isMobileDevice()) return;
@@ -129,6 +131,11 @@ const Notes = () => {
         }
     };
 
+    // If loading mode is set to true and notes aren't fetched show an loading animation
+    if (loading && !isFetched) {
+        return ''
+    }
+
     return (
         <>
             {/* if there are notes, show them, if not, the user will see the create note state */}
@@ -171,7 +178,7 @@ const Notes = () => {
                     <div
                         ref={notesContainerRef}
                         className="all-notes-container">
-                        {loadingMode ? (
+                        {loading ? (
                             <NoteCardSkeleton />
                         ) : (
                             userNotes.map((note, i) => (
@@ -221,7 +228,7 @@ const Notes = () => {
                         handleAddNote={handleAddNote}
                     />
 
-                    
+
                 </div>
             ) : (
                 <div className="dashboard-zero-files">
