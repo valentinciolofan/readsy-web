@@ -559,9 +559,8 @@ label.remember-me-label {
 */
 .all-notes-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 15px;
-    overflow-y: auto;
 }
 
 .note-span-two {
@@ -577,8 +576,7 @@ label.remember-me-label {
 }
 
 .note-card {
-    min-width: 150px;
-    max-width: 200px;
+    max-width: 100%;
     padding: 25px 10px 50px 10px;
     /* background-color: #C3FF45; */
     display: flex;
@@ -587,6 +585,7 @@ label.remember-me-label {
     cursor: pointer;
     user-select: none;
     opacity: 1;
+    box-sizing: border-box;
 }
 
 .note-card.unselected {
@@ -819,15 +818,25 @@ label.remember-me-label {
     position: absolute;
     top: 30px; /* Adjust based on your layout */
     right: 0;
-    background: #fff;
-    border: 1px solid #ccc;
+    background: #2d2d2d;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     min-width: 120px;
-    overflow: hidden;
 }
-
+.dropdown-container .dropdown-menu::after {
+    content: " ";
+    position: absolute;
+    top: 0%;
+    /* At the top of the tooltip */
+    right: 0%;
+    margin-top: -17px;
+    border-width: 10px;
+    border-style: solid;
+    border-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-color: transparent transparent #2d2d2d transparent;
+}
 /* Dropdown item styling */
 .dropdown-item {
     padding: 10px 15px;
@@ -838,12 +847,6 @@ label.remember-me-label {
     cursor: pointer;
     font-size: 14px;
 }
-
-.dropdown-item:hover {
-    background: #f5f5f5;
-}
-
-
 
 /* ########## note styling ##### */
 .note-container {
@@ -1459,9 +1462,9 @@ p {
     }
 
     .dashboard-menu {
-        flex-basis: 25%;
+        /* flex-basis: 25%; */
         border-right: 1px solid #2D2D2D;
-        position: sticky;
+        /* position: sticky; */
         height: 100%;
         left: 0;
         top: 0;
@@ -1499,7 +1502,6 @@ p {
     }
 
     .container {
-        display: flex;
         height: 100%;
     }
 
@@ -1621,7 +1623,6 @@ p {
     .dashboard-all-uploaded-files {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
-
     .book {
         max-width: 150px;
     }
@@ -1636,5 +1637,7 @@ p {
         min-width: 600px;
         align-self: center;
     }
+
+
 
 }

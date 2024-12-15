@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const NotesMenu = ({ onDelete }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef(null); // Reference to the dropdown container
 
     const toggleDropdown = () => {
         setIsOpen((prev) => !prev);
     };
 
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setIsOpen(false); // Close the dropdown if clicked outside
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('click', handleClickOutside);
+        } else {
+            document.removeEventListener('click', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [isOpen]);
+
     return (
-        <div className="dropdown-container">
+        <div className="dropdown-container" ref={menuRef}>
             {/* SVG Button */}
             <button className="dropdown-toggle" onClick={toggleDropdown}>
                 <svg
@@ -31,9 +50,7 @@ const NotesMenu = ({ onDelete }) => {
             {/* Dropdown Menu */}
             {isOpen && (
                 <div className="dropdown-menu">
-                    <button className="dropdown-item"
-                     onClick={onDelete}
-                     >
+                    <button className="dropdown-item nav-link" onClick={onDelete}>
                         Delete
                     </button>
                 </div>

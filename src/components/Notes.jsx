@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,6 +7,7 @@ import Note from "./Note";
 import DeleteNotesModal from "./DeleteNotesModal";
 import NoteCardSkeleton from "./NoteCardSkeleton";
 import NotesMenu from "./NotesMenu";
+import SearchBar from "./SearchBar";
 
 const colorClasses = ["green", "blue", "orange", "purple"];
 
@@ -22,7 +23,15 @@ const Notes = () => {
     const [deleteNotes, setDeleteNotes] = useState([]);
     const [isDeleting, setIsDeleting] = useState(true);
     const [isFetched, setIsFetched] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
+    // Search feature
+    const filteredNotes = useMemo(() => {
+        return userNotes.filter((note) =>
+            note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            note.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }, [searchTerm, userNotes]);
     useEffect(() => {
         // Fetch user notes
         const fetchNotes = async () => {
@@ -158,13 +167,11 @@ const Notes = () => {
 
                         ) : (
                             <>
-                                <div className="search-box-container">
-                                    <svg className="search-box-icon" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="#909090" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"></path></svg>
-                                    <input
-                                        type="search"
-                                        placeholder="Search by name of the document"
-                                        className="search-box" />
-                                </div>
+                                <SearchBar
+                                    searchValue={searchTerm}
+                                    onSearchChange={setSearchTerm}
+                                />
+
                                 <div>
                                     <NotesMenu onDelete={handleDeleteMode} />
                                 </div>
@@ -181,7 +188,7 @@ const Notes = () => {
                         {loading ? (
                             <NoteCardSkeleton />
                         ) : (
-                            userNotes.map((note, i) => (
+                            filteredNotes.map((note, i) => (
                                 <label
                                     key={note.id}
                                     className={`note-card ${colorClasses[i % colorClasses.length]} ${deleteMode ? 'unselected' : ''} ${isDeleting ? 'burn' : ''}`}
