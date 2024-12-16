@@ -72,23 +72,26 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
   // }
 
   // Delete notes
-  const handleDeleteNotes = () => {
+  const handleDeleteNotes = async () => {
     const noteIds = deleteNotes;
+
     try {
-      const result = dispatch(deleteUserNotes(noteIds)).unwrap();
+      // Wait for dispatch to complete
+      const result = await dispatch(deleteUserNotes(noteIds)).unwrap();
 
-
+      // Wait for the animation to complete before updating UI
       // Turn off the delete mode
       handleDeleteMode();
 
-      // Close the delete modal 
+      // Close the delete modal
       setShowModal(false);
-
 
     } catch (error) {
       console.error('Failed to delete notes:', error);
     }
   };
+
+
 
   const handleDeleteBtn = () => {
     if (!showModal) {
@@ -106,7 +109,7 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
             onClick={handleDeleteBtn}
             className="delete-notes-btn btn-warning rounded"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M1 3.5h12m-10.5 0h9v9a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1zm2 0V3a2.5 2.5 0 1 1 5 0v.5m-4 3.001v4.002m3-4.002v4.002" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 14 14"><path fill="none" stroke="currentColor" stroke-linecap="round" strokeLinejoin="round" d="M1 3.5h12m-10.5 0h9v9a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1zm2 0V3a2.5 2.5 0 1 1 5 0v.5m-4 3.001v4.002m3-4.002v4.002" /></svg>
           </button>
           <button
             type="button"
@@ -121,14 +124,14 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
           <button
             type="button"
             className="note btn-primary rounded"
-          style={{ visibility: deleteMode ? "hidden" : "visible" }}
-          onClick={handleAddNote}
+            style={{ visibility: deleteMode ? "hidden" : "visible" }}
+            onClick={handleAddNote}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"></path></svg>
           </button>
         </div>
       )}
-      {showModal && (
+      {showModal && deleteNotes.length !== 0 && (
         <div
           className="modal-overlay"
         // onClick={handleOutsideClick}

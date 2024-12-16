@@ -7,6 +7,7 @@ const notesSlice = createSlice({
         userNotes: [],
         loading: false,
         error: null,
+        isDeleting: false,
     },
     reducers: {
         setNotes(state, action) {
@@ -47,6 +48,7 @@ const notesSlice = createSlice({
             })
             .addCase(deleteUserNotes.fulfilled, (state, action) => {
                 state.userNotes = state.userNotes.filter(note => !action.payload.includes(note.id));
+                state.isDeleting = true;
             });
     },
 });

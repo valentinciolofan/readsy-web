@@ -759,7 +759,7 @@ label.remember-me-label {
 #deleteNotesBtn {
     padding: 10px;
     border: none;
-    background-color: #C3FF45;
+    background-color: #4CD6FF;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -772,6 +772,7 @@ label.remember-me-label {
     padding: 10px;
     border: none;
     background-color: #D53232;
+    color: currentColor;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -798,6 +799,7 @@ label.remember-me-label {
     right: 0;
     padding: 20px;
 }
+
 /* Delete mode dropdown */
 /* Container styling */
 .dropdown-container {
@@ -1317,7 +1319,6 @@ p {
     from {
         opacity: 1;
     }
-
     to {
         opacity: 0;
     }

@@ -18,10 +18,9 @@ const Notes = () => {
     const dispatch = useDispatch((state) => state.notes.userNotes);
     const navigate = useNavigate();
     const notesContainerRef = useRef();
-    const { userNotes, loading, error } = useSelector(state => state.notes);
+    const { userNotes, loading, error, isDeleting } = useSelector(state => state.notes);
     const [deleteMode, setDeleteMode] = useState(false);
     const [deleteNotes, setDeleteNotes] = useState([]);
-    const [isDeleting, setIsDeleting] = useState(true);
     const [isFetched, setIsFetched] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -116,7 +115,6 @@ const Notes = () => {
     const handleDeleteMode = () => {
         // When user turns off the delete mode, clear the deleteNotes state
         if (deleteMode) {
-            setIsDeleting(true);
             setTimeout(setDeleteNotes([]), 500);
         }
         setDeleteMode(!deleteMode);
@@ -129,13 +127,11 @@ const Notes = () => {
     };
 
     // Select all / deselect all notes when in delete mode
-    const handleSelectAll = () => {
-        console.log(deleteNotes.length)
-        if (deleteNotes.length === 0) {
+    const handleSelectAll = (inputCheckbox) => {
+        if (inputCheckbox.target.checked) {
             const allNotesId = userNotes.map(note => note.id);
             setDeleteNotes(allNotesId);
-        } else if (deleteNotes.length > 0) {
-            const allNotesId = userNotes.map(note => note.id);
+        } else {
             setDeleteNotes([]);
         }
     };
@@ -190,14 +186,21 @@ const Notes = () => {
                         ) : (
                             filteredNotes.map((note, i) => (
                                 <label
+                                    data-id={note.id}
                                     key={note.id}
-                                    className={`note-card ${colorClasses[i % colorClasses.length]} ${deleteMode ? 'unselected' : ''} ${isDeleting ? 'burn' : ''}`}
+                                    className={`note-card ${colorClasses[i % colorClasses.length]} ${deleteMode ? 'unselected' : ''}`}
                                     style={{ opacity: deleteNotes.includes(note.id) ? '1' : '' }}
                                     onClick={() => handleOpenNote(note)}
                                 >
                                     <div className="note-card-overlay">
                                         <div className="note-card-header">
-                                            <p className="note-card-title font-normal bold">{note.title.split(/\s+/).slice(0, 3).join(' ')}</p>
+                                            <p className="note-card-title font-normal bold">{
+                                                note.title.split(/\s+/).length === 1 ?
+                                                    note.title.split(' ')[0].slice(0, 12)
+                                                    :
+                                                    note.title.split(/\s+/).slice(0, 3).join(' ')
+
+                                            }</p>
                                             {deleteMode ?
                                                 <>
                                                     <input
