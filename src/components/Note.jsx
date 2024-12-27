@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { convertFromRaw } from 'draft-js';
-import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../firebase/firestore/notes/firestoreAsyncThunk';
+import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../firebase/firestore/firestoreAsyncThunk';
 import NoteHeader from "./NoteHeader";
 import NoteEditor from "./NoteEditor";
 import { useDispatch } from "react-redux";

@@ -4,6 +4,7 @@ import fileReducer from '../features/files/fileSlice';
 import pdfReducer from "../features/pdf/pdfReducer";
 import notesReducer from "../features/notes/notesSlice";
 import ttsReducer from '../features/tts/ttsSlice';
+import filesReducer from '../features/files/fileSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     pdf: pdfReducer,
     notes: notesReducer,
     tts: ttsReducer,
+    files: filesReducer,
   },
 });
 

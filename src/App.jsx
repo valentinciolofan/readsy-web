@@ -36,7 +36,7 @@ const App = () => {
             <Route path="profile" element={<Profile />} />
             {/* <Route path="settings" element={<Settings />} /> */}
             {/* <Route path="chat" element={<Chat />} /> */}
-            <Route path="readpdf" element={<PdfViewer />} />
+            <Route path="readpdf/:pdfName" element={<PdfViewer />} />
             
 
           </Route>

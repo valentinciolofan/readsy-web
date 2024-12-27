@@ -20,7 +20,7 @@ landing page style
 ### hero section ####
 */
 main {
-    flex-basis: 90%;
+    /* flex-basis: 90%; */
     animation: fadeIn 1s ease-out;
     position: relative;
 }
@@ -306,7 +306,6 @@ label.remember-me-label {
    ########################################
 */
 .container {
-    flex-basis: 100%;
     height: 100%;
 }
 
@@ -324,6 +323,7 @@ label.remember-me-label {
     overflow-x: hidden;
     flex-direction: column;
     gap: 15px;
+    flex-basis: 100%;
 }
 
 .dashboard-zero-files {
@@ -433,8 +433,8 @@ label.remember-me-label {
 /* dashboard files/documents grid */
 .dashboard-all-uploaded-files {
     display: grid;
-    grid-template-columns: repeat(1fr);
-    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 15px;
     max-height: 100vh;
     overflow-y: auto;
     margin-top: 30px;
@@ -443,10 +443,16 @@ label.remember-me-label {
 .book {
     text-align: center;
     border: 1px solid #2d2d2d;
-    padding: 15px;
-    gap: 10px;
     border-radius: 40px;
     display: flex;
+    max-width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+    opacity: 1;
+    padding: 15px;
 }
 
 .book svg {
@@ -467,29 +473,26 @@ label.remember-me-label {
     gap: 10px;
 }
 
-.file-info {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
 /* MENU COMPONENT */
 .dashboard-menu {
     z-index: 999;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
     height: 100%;
     background-color: #000000;
     overflow-x: hidden;
     overflow-y: auto;
+    border-right: 1px solid #2d2d2d;
+    width: 70%;
+    display: flex;
 }
 
 .dashboard-menu-container {
     display: flex;
     flex-direction: column;
     min-height: 100%;
+    flex-grow: 1;
 }
 
 .toggleMenu {
@@ -515,7 +518,6 @@ label.remember-me-label {
 }
 
 .dashboard-menu-container img {
-
     height: auto;
     align-self: center;
     padding-bottom: 40px;
@@ -526,9 +528,7 @@ label.remember-me-label {
     border-top: 1px solid #2D2D2D;
     display: flex;
     justify-content: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
-
+    padding: 40px 0px;
 }
 
 .nav-container {
@@ -544,14 +544,6 @@ label.remember-me-label {
     gap: 12px;
 }
 
-.user-avatar-and-name {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    border-top: 1px solid #2D2D2D;
-    padding: 40px 24px;
-}
 
 /* ########################################
    NOTES STYLING
@@ -588,7 +580,8 @@ label.remember-me-label {
     box-sizing: border-box;
 }
 
-.note-card.unselected {
+.note-card.unselected,
+.book.unselected {
     opacity: 0.6
 }
 
@@ -698,6 +691,7 @@ label.remember-me-label {
     position: relative;
     overflow: hidden;
 }
+
 .note-card-skeleton::before {
     content: '';
     position: absolute;
@@ -709,17 +703,20 @@ label.remember-me-label {
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
     z-index: 1;
-    border-radius: 40px; 
-    border-top-left-radius: 0%; 
+    border-radius: 40px;
+    border-top-left-radius: 0%;
 }
+
 .note-card-skeleton.reversedBorder {
     border-radius: 40px;
     border-bottom-right-radius: 0%;
 }
+
 .note-card-skeleton.reversedBorder::before {
     border-radius: 40px;
     border-bottom-right-radius: 0%;
 }
+
 .note-card-title-skeleton,
 .note-card-description-skeleton {
     color: transparent;
@@ -793,6 +790,7 @@ label.remember-me-label {
     justify-content: center;
     gap: 14px;
 }
+
 .create-new-element {
     position: absolute;
     bottom: 5%;
@@ -818,7 +816,8 @@ label.remember-me-label {
 /* Dropdown menu styling */
 .dropdown-menu {
     position: absolute;
-    top: 30px; /* Adjust based on your layout */
+    top: 30px;
+    /* Adjust based on your layout */
     right: 0;
     background: #2d2d2d;
     border-radius: 4px;
@@ -826,6 +825,7 @@ label.remember-me-label {
     z-index: 1000;
     min-width: 120px;
 }
+
 .dropdown-container .dropdown-menu::after {
     content: " ";
     position: absolute;
@@ -839,6 +839,7 @@ label.remember-me-label {
     border-bottom-right-radius: 4px;
     border-color: transparent transparent #2d2d2d transparent;
 }
+
 /* Dropdown item styling */
 .dropdown-item {
     padding: 10px 15px;
@@ -1088,10 +1089,15 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0px 12px;
     border-left: 1px solid #2d2d2d;
     transform: translateX(0%);
     transition: transform 0.3s ease-in;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000000;
+    width: 100%;
 }
 
 .toggleReadsy {
@@ -1137,13 +1143,40 @@ p {
     margin-top: 12px;
 }
 
+/* Container for the input box */
 .readsy-input-box-container {
     position: relative;
+    box-sizing: border-box; /* Ensures padding is included in width/height calculations */
     display: flex;
-    align-items: center;
-    min-width: 100%;
+    justify-content: center; /* Center content horizontally */
+    min-width: 250px; /* Prevents the container from overflowing */
+    margin-bottom: 40px; /* Spacing below the container */
 }
 
+/* Input box styling */
+.readsy-input-box {
+    background-color: #2d2d2d; /* Dark background for the input */
+    color: #909090; /* Light grey text for contrast */
+    border: none; /* Removes default input border */
+    box-sizing: border-box; /* Padding is included in the total width */
+    border-radius: 40px; /* Rounded corners for the input */
+    position: relative;
+    padding: 10px 25px 10px 10px;
+    min-width: 100%;
+    font-size: 12px;
+    overflow: hidden; 
+}
+
+/* Speech icon (microphone or stop icon) styling */
+.readsy-input-box-icon {
+    position: absolute; /* Positioned relative to the container */
+    top: 50%; /* Vertically centered */
+    transform: translateY(-50%); /* Ensures proper vertical alignment */
+    right: 10px; /* Spaced 15px from the right edge of the container */
+    color: #909090; /* Matches the text color of the input */
+    cursor: pointer; /* Indicates clickability */
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+}
 .readsy-message {
     background-color: #2d2d2d;
     padding: 10px;
@@ -1178,26 +1211,8 @@ p {
 .readsy-message ul,
 .readsy-message ol {
     padding-left: 0.5em;
-    /* Adjust as needed */
     margin: 0;
     list-style-position: inside;
-}
-
-.readsy-input-box {
-    background-color: #2d2d2d;
-    color: #909090;
-    border: none;
-    padding: 15px 45px 15px 15px;
-    border-radius: 40px;
-    font-size: 16px;
-    min-width: 100%;
-}
-
-.readsy-input-box-icon {
-    position: absolute;
-    right: 15px;
-    color: #909090;
-    cursor: pointer;
 }
 
 /* ###########
@@ -1270,18 +1285,22 @@ p {
     0% {
         background-position: -200% 0;
     }
+
     100% {
         background-position: 200% 0;
     }
 }
+
 @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
-        }
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
 @keyframes shakeCharLimit {
     0% {
         transform: translate(-2px, -50%);
@@ -1319,6 +1338,7 @@ p {
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
     }
@@ -1393,28 +1413,21 @@ p {
     }
 }
 
+/* SMALLER SCREENS */
+@media screen and (max-width: 1024px) {
+    .toggleBtn {
+        visibility: visible !important;
+    }
+}
+
+
+
+
 /* LARGER SCREEN DEVICES */
 @media screen and (min-width: 450px) {
-    .dashboard-all-uploaded-files {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    }
-
-    .book {
-        flex-direction: column;
-        max-width: 100px;
-        border-radius: 15px;
-        align-items: center;
-    }
-
     .file-title-and-info {
         align-items: center;
     }
-
-    .file-info {
-        justify-content: space-between;
-        align-items: space-between;
-    }
-
 }
 
 @media screen and (min-width: 768px) {
@@ -1453,7 +1466,6 @@ p {
     }
 
     /* ### dashboard */
-
     .container {
         padding: 0px;
     }
@@ -1463,21 +1475,11 @@ p {
     }
 
     .dashboard-menu {
-        /* flex-basis: 25%; */
         border-right: 1px solid #2D2D2D;
-        /* position: sticky; */
         height: 100%;
         left: 0;
         top: 0;
-    }
-
-    .container aside {
-        flex-basis: 25%;
-    }
-
-    .dashboard-menu-container img {
-        align-self: flex-start;
-        padding-left: 10px;
+        width: 100%;
     }
 
     .toggleBtn {
@@ -1485,21 +1487,12 @@ p {
     }
 
     .navigation-menu {
-        justify-content: flex-start;
-    }
-
-    .nav-container {
-        margin-left: 24px;
+        justify-content: center;
     }
 
     .nav-container button svg {
         width: 1.5em;
         height: 1.5em;
-    }
-
-    .user-avatar-and-name {
-        justify-content: flex-start;
-        padding-left: 24px;
     }
 
     .container {
@@ -1548,6 +1541,25 @@ p {
 }
 
 @media screen and (min-width: 1024px) {
+    .container {
+        display: flex;
+    }
+
+    .dashboard-menu {
+        flex-basis: 15%;
+        position: static;
+    }
+
+    .dashboard-main {
+        flex-basis: 70%;
+    }
+
+    aside.readsy-gpt {
+        flex-basis: 15%;
+        position: static;
+        flex-grow: 0;
+    }
+
     .landing-page-header {
         padding: 0px 56px;
     }
@@ -1610,22 +1622,7 @@ p {
 
     /* DASHBOARD DESKTOP STYLING */
     .dashboard-menu-container img {
-        padding-left: 40px;
-    }
-
-    .nav-container {
-        margin-left: 56px;
-    }
-
-    .user-avatar-and-name {
-        padding-left: 56px;
-    }
-
-    .dashboard-all-uploaded-files {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-    .book {
-        max-width: 150px;
+        /* padding-left: 40px; */
     }
 
     .book svg {
@@ -1639,6 +1636,21 @@ p {
         align-self: center;
     }
 
+    .readsy-input-box-container {
+        min-width: 100%;
+    }
+    .readsy-input-box {
+        min-width: auto;
+        max-width: 90%;
 
+    }
 
+}
+@media screen and (min-width: 1400px) {
+    .readsy-input-box {
+        min-width: 90%;
+    }
+    .readsy-input-box-icon {
+        right: 15px;
+    }
 }

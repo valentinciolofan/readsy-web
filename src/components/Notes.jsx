@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../firebase/firestore/notes/firestoreAsyncThunk';
+import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../firebase/firestore/firestoreAsyncThunk';
 import Note from "./Note";
 import DeleteNotesModal from "./DeleteNotesModal";
 import NoteCardSkeleton from "./NoteCardSkeleton";
@@ -199,7 +199,6 @@ const Notes = () => {
                                                     note.title.split(' ')[0].slice(0, 12)
                                                     :
                                                     note.title.split(/\s+/).slice(0, 3).join(' ')
-
                                             }</p>
                                             {deleteMode ?
                                                 <>
@@ -237,8 +236,6 @@ const Notes = () => {
                         handleDeleteMode={handleDeleteMode}
                         handleAddNote={handleAddNote}
                     />
-
-
                 </div>
             ) : (
                 <div className="dashboard-zero-files">

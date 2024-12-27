@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../../firebase/firestore/notes/firestoreAsyncThunk';
+import { fetchUserNotes, addUserNote, editUserNote, deleteUserNotes } from '../../firebase/firestore/firestoreAsyncThunk';
 
 const notesSlice = createSlice({
     name: 'notes',

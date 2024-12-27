@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import * as PDFJS from "pdfjs-dist";
 import { TextLayer } from "pdfjs-dist";
 import { _setPdfText } from "../features/pdf/pdfReducer";
 import { startTTS, stopTTS } from "../features/tts/ttsSlice";
-import startSpeaking  from './TextToSpeech'
+import startSpeaking from './TextToSpeech'
 
 PDFJS.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.7.76/build/pdf.worker.min.mjs";
-const pdfUrl = '/1.pdf';
+
 
 const PdfViewer = () => {
   const ttsDispatch = useDispatch(state => state.tts.readAloud);
@@ -23,6 +24,10 @@ const PdfViewer = () => {
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [pageIndex, setPageIndex] = useState(null);
+  const location = useLocation();
+
+  const { pdfUrl } = location.state;
+
 
   // Load voices on component mount
   useEffect(() => {

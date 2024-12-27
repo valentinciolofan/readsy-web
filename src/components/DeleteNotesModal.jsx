@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserNotes } from '../firebase/firestore/notes/firestoreAsyncThunk';
+import { deleteUserNotes, deleteFiles } from '../firebase/firestore/firestoreAsyncThunk';
+import { useAuth } from '../contexts/AuthContext';
 
 
 
 const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAddNote }) => {
-  const dispatch = useDispatch(state => state.notes.userNotes);
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const { user } = useAuth();
 
   // const [animationClass, setAnimationClass] = useState("");
 
@@ -91,6 +93,26 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
     }
   };
 
+  // Delete files
+  const handleDeleteFiles = async () => {
+    const fileIds = deleteNotes;
+
+
+    try {
+      // Wait for dispatch to complete
+      const result = await dispatch(deleteFiles({ fileIds, userId: user.uid})).unwrap();
+
+      // Turn off the delete mode
+      handleDeleteMode();
+
+      // Close the delete modal
+      setShowModal(false);
+
+    } catch (error) {
+      console.error('Failed to delete notes:', error);
+    }
+  };
+
 
 
   const handleDeleteBtn = () => {
@@ -146,7 +168,7 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
             <div className="confirm-delete-actions">
               <button
                 type="button"
-                onClick={handleDeleteNotes}
+                onClick={handleDeleteFiles}
                 id="deleteNotesBtn"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeDasharray={24} strokeDashoffset={24} strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 11l6 6l10 -10"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="24;0"></animate></path></svg>
