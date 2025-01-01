@@ -9,6 +9,8 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuth();
+  const locationIsNotes = window.location.pathname === '/dashboard/notes' ? true : false;
+  
 
   // const [animationClass, setAnimationClass] = useState("");
 
@@ -80,8 +82,7 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
     try {
       // Wait for dispatch to complete
       const result = await dispatch(deleteUserNotes(noteIds)).unwrap();
-
-      // Wait for the animation to complete before updating UI
+      console.log(noteIds);
       // Turn off the delete mode
       handleDeleteMode();
 
@@ -97,11 +98,9 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
   const handleDeleteFiles = async () => {
     const fileIds = deleteNotes;
 
-
     try {
       // Wait for dispatch to complete
       const result = await dispatch(deleteFiles({ fileIds, userId: user.uid})).unwrap();
-
       // Turn off the delete mode
       handleDeleteMode();
 
@@ -112,7 +111,19 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
       console.error('Failed to delete notes:', error);
     }
   };
-
+  // Based on pathname execute a different function when user confirms the deletion 
+  const getDeleteHandler = () => {
+    if (locationIsNotes) {
+      console.log('Executing handleDeleteNotes');
+      return handleDeleteNotes; // Return the function reference
+    } else {
+      console.log('Executing handleDeleteFiles');
+      return handleDeleteFiles; // Return the function reference
+    }
+  };
+  
+  
+  
 
 
   const handleDeleteBtn = () => {
@@ -162,13 +173,13 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
           <div className={`confirm-delete-modal `}>
             <div className="modal-message">
               <h5>Confirm delete</h5>
-              <p className="font-small">Are you sure you want to delete {deleteNotes.length} notes?</p>
+              <p className="font-small">Are you sure you want to delete {deleteNotes.length} {locationIsNotes ? 'notes' : 'files'}?</p>
             </div>
 
             <div className="confirm-delete-actions">
               <button
                 type="button"
-                onClick={handleDeleteFiles}
+                onClick={() => getDeleteHandler()()} 
                 id="deleteNotesBtn"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeDasharray={24} strokeDashoffset={24} strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 11l6 6l10 -10"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="24;0"></animate></path></svg>

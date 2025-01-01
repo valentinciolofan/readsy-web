@@ -160,7 +160,6 @@ const Notes = () => {
                                 <span className="checkbox-custom-checkmark"></span>
                                 Select all
                             </label>
-
                         ) : (
                             <>
                                 <SearchBar

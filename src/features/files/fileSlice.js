@@ -34,7 +34,7 @@ const filesSlice = createSlice({
         state.fetched = false; // Set fetched flag to false
       })
       .addCase(fetchFiles.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading = false; 
         state.files = action.payload; // Replace state with fetched files
         state.fetched = true; // Set fetched flag to true
       })
