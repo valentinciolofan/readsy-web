@@ -231,11 +231,7 @@ export const deleteFiles = createAsyncThunk(
           console.log(`File metadata for ID "${fileId}" successfully deleted.`);
 
           // Push the deleted file's metadata into the array
-          deletedFiles.push({
-            id: fileId,
-            name: fileData.name, // Unique name
-            originalName: fileData.originalName || fileData.name, // Original name, fallback to unique name if not present
-          });
+          deletedFiles.push(fileId);
         } catch (fileError) {
           console.error(`Error processing file with ID "${fileId}":`, fileError);
         }

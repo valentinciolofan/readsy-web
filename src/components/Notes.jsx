@@ -55,7 +55,7 @@ const Notes = () => {
                 notesContainerRef.current.removeEventListener('touchstart', holdToStartDeleteMode);
             }
         };
-    }, [dispatch, uid]);
+    }, [dispatch, uid, isDeleting]);
 
     // Utility function to detect if the user is on a mobile device
     const isMobileDevice = () => {

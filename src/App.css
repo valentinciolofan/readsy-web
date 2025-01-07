@@ -320,10 +320,11 @@ label.remember-me-label {
 .dashboard-main {
     height: 100%;
     display: flex;
-    overflow-x: hidden;
+    overflow: hidden;
     flex-direction: column;
     gap: 15px;
     flex-basis: 100%;
+    position: relative;
 }
 
 .dashboard-zero-files {
@@ -431,14 +432,21 @@ label.remember-me-label {
 }
 
 /* dashboard files/documents grid */
-.dashboard-all-uploaded-files, .files-placeholder-container {
+.dashboard-all-uploaded-files {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(135px, 150px)); 
     grid-gap: 15px;
-    max-height: 100vh;
     overflow-y: auto;
     margin-top: 30px;
     box-sizing: border-box;
+    padding-bottom: 250px;
+    height: 90vh;
+}
+.dashboard-all-uploaded-files {
+    opacity: 0;
+    transform: scale(0.95);
+    animation: fadeInGrow 0.5s ease forwards;
 }
 
 .book {
@@ -452,10 +460,19 @@ label.remember-me-label {
     gap: 14px;
     cursor: pointer;
     user-select: none;
-    opacity: 1;
     padding: 15px;
     position: relative;
+    text-wrap: wrap;
 }
+.book.placeholder-content {
+    opacity: 1;
+    animation: fadeOut 0.5s ease forwards;
+}
+.book.placeholder-content.unfetched {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
 .book:has(.book-title-skeleton):before {
     content: '';
     position: absolute;
@@ -469,9 +486,11 @@ label.remember-me-label {
     z-index: 1;
     border-radius: 40px;
 }
+
 .book:has(.book-title-skeleton) {
     border: none;
 }
+
 .book-title-skeleton,
 .book-pdfIcon-skeleton {
     color: transparent;
@@ -485,9 +504,11 @@ label.remember-me-label {
     animation: shimmer 2s infinite;
     z-index: 2;
 }
+
 .book-pdfIcon-skeleton {
     background: none;
 }
+
 .book svg {
     width: 2.5em;
     height: 2.5em;
@@ -506,7 +527,6 @@ label.remember-me-label {
     gap: 10px;
 }
 
-/* MENU COMPONENT */
 .dashboard-menu {
     z-index: 999;
     position: fixed;
@@ -654,6 +674,7 @@ label.remember-me-label {
     right: 20px;
     border: 1px solid #2d2d2d;
 }
+
 .custom-checkbox:checked.files+.checkbox-custom-checkmark.files {
     border: 1px solid #2d2d2d;
     background-color: transparent;
@@ -827,16 +848,18 @@ label.remember-me-label {
 
 .delete-mode-modal {
     position: fixed;
-    bottom: 5%;
+    bottom: 0%;
     left: 0;
     right: 0;
     display: flex;
     justify-content: center;
     gap: 14px;
+    background-color: #000000;
+    padding: 20px 0px;
 }
 
 .create-new-element {
-    position: fixed;
+    position: absolute;
     bottom: 5%;
     right: 0;
     padding: 0px 20px;
@@ -1111,6 +1134,8 @@ p {
     flex-direction: column;
     align-items: center;
     scroll-behavior: smooth;
+    overflow: auto;
+    height: 90vh;
 }
 
 .pdf-loader {
@@ -1342,16 +1367,16 @@ p {
 }
 
 /* animations */
-@keyframes shimmer {
-    0% {
-        background-position: -200% 0;
+@keyframes fadeInGrow {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
     }
-
-    100% {
-        background-position: 200% 0;
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 }
-
 @keyframes shimmer {
     0% {
         background-position: -200% 0;

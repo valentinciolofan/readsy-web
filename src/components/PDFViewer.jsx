@@ -6,6 +6,7 @@ import { TextLayer } from "pdfjs-dist";
 import { _setPdfText } from "../features/pdf/pdfReducer";
 import { startTTS, stopTTS } from "../features/tts/ttsSlice";
 import startSpeaking from './TextToSpeech'
+import PDFbuttons from "./PDFbuttons";
 
 PDFJS.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.7.76/build/pdf.worker.min.mjs";
 
@@ -22,11 +23,45 @@ const PdfViewer = () => {
   const [readAloud, setReadAloud] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [voices, setVoices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [stopRendering, setStopRendering] = useState(false);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [pageIndex, setPageIndex] = useState(null);
   const location = useLocation();
 
   const { pdfUrl } = location.state;
+
+
+  useEffect(() => {
+    // Setting loading state untill the pdf is loaded.
+
+    // Load pdf file
+    const loadPDF = async (pdf_url) => {
+      try {
+        setLoading(true);
+        const pdf_doc = await PDFJS.getDocument({ url: pdf_url }).promise;
+
+        if (pdf_doc) {
+          console.log("PDF loaded successfully!");
+          setPdfDoc(pdf_doc);
+          setTotalPages(pdf_doc.numPages);
+
+          // Initial scale
+          const scale = 1;
+          // Call the function to show the pdf document.
+          await renderPages(pdf_doc, pdf_doc.numPages, scale);
+        }
+      } catch (error) {
+        console.error("Error loading PDF: ", error);
+      } finally {
+        setLoading(false); // Ensure loading is false after rendering
+      }
+    }
+
+    if (pdfUrl) {
+      loadPDF(pdfUrl);
+    }
+  }, [pdfUrl]);
 
 
   // Load voices on component mount
@@ -48,42 +83,24 @@ const PdfViewer = () => {
     };
 
     loadVoices();
-    console.log(ttsStatus);
   }, [ttsStatus]);
 
-
-
-  useEffect(() => {
-    // Setting loading state untill the pdf is loaded.
-
-    // Load pdf file
-    const loadPDF = async (pdf_url) => {
-      const pdf_doc = await PDFJS.getDocument({ url: pdf_url }).promise;
-
-      if (pdf_doc !== null) {
-        setPdfDoc(pdf_doc);
-        setTotalPages(pdf_doc.numPages);
-
-        // Call the function to show the pdf document.
-        showPDF();
-      }
-    }
-
-    loadPDF(pdfUrl);
-  }, [pdfUrl]);
-
-
-
-
-  const renderPages = async (pagesNr) => {
+  const renderPages = async (doc, pagesNr, scale) => {
     // Get the container where the canvas and text layer will render
     const pagesContainer = pagesContainerRef.current;
 
-    // Store full text of the pdf document.
-    let fullText = [];
+    // Clear any existing content
+    pagesContainer.innerHTML = ''; // Clear container
+
+    let fullText = []; // To store extracted text for all pages
 
     // Iterate through the number of pages and render them.
     for (let i = 1; i <= pagesNr; i++) {
+      if (stopRendering) {
+        setStopRendering(false);
+        return;
+      }
+
       const pdfLoader = document.createElement('div');
       pdfLoader.setAttribute("id", i);
       pdfLoader.className = 'pdf-loader';
@@ -93,11 +110,12 @@ const PdfViewer = () => {
       const renderPage = async (pages_Nr) => {
 
         // Fetch the page
-        const page = await pdfDoc.getPage(i);
-
+        const page = await doc.getPage(i);
+        console.log(page, 'this is page with nr', i);
         // Get viewport of the page at required scale
+        console.log(scale);
         let viewport = page.getViewport({
-          scale: scalePdf,
+          scale: scale,
         });
 
         // Set canvas height
@@ -161,24 +179,13 @@ const PdfViewer = () => {
   }
 
   // After pdf is loaded, set loading to false 
-  const showPDF = async () => {
-    if (pdfDoc) {
-      await renderPages(totalPages);
-    }
+  const showPDF = async (doc) => {
+
+    console.log('call showpdf', doc)
+    await renderPages(doc, doc.numPages,);
   }
 
-  // Handle zoom in and out
-  const handleZoomIn = () => {
-    setScalePdf(scalePdf + 0.2);
-    renderPages(totalPages);
-    console.log('up')
 
-  }
-  const handleZoomOut = () => {
-    setScalePdf(prevScale => Math.max(0.5, prevScale - 0.2));
-    renderPages(totalPages);
-    console.log('down')
-  }
   // Get and add event listener to every span from textLayer
   const addEventListenersToSpans = () => {
     const allSpans = document.querySelectorAll('.textLayer span');
@@ -251,34 +258,52 @@ const PdfViewer = () => {
       document.removeEventListener('keydown', keyDownHandler);
     };
   };
+  // Handle Zoom In
+  const handleZoomIn = () => {
+    const newScale = scalePdf + 0.2;
+    setScalePdf(newScale);
+    setStopRendering(true);
+    renderPages(pdfDoc, totalPages, newScale);
+  };
+
+  // Handle Zoom Out
+  const handleZoomOut = () => {
+    const newScale = Math.max(0.5, scalePdf - 0.2);
+    setScalePdf(newScale);
+    setStopRendering(true);
+    renderPages(pdfDoc, totalPages, newScale);
+  };
 
   return (
     <div className="pdf-viewer">
-      <button type="button" onClick={handleZoomIn}>Zoom In</button>
-      <button type="button" onClick={handleZoomOut}>Zoom Out</button>
-      {/* Dropdown for selecting voice */}
-      <select onChange={handleVoiceChange}>
+      <PDFbuttons
+        pdfDoc={pdfDoc}
+        scalePdf={scalePdf}
+        handleZoomIn={handleZoomIn}
+        handleZoomOut={handleZoomOut}
+        handleReadAloud={handleReadAloud}
+        handlePause={handlePause}
+        ttsStatus={ttsStatus}
+        isPaused={isPaused}
+      />
+      {/* <select onChange={handleVoiceChange}>
         {voices.map((voice, index) => (
           <option key={index} value={index}>
             {voice.name} ({voice.lang})
           </option>
         ))}
-      </select>
+      </select> */}
 
 
-      <button type="button" onClick={handleReadAloud}>
-        {ttsStatus ? 'Stop' : 'Read Aloud'}
-      </button>
-      <button type="button" onClick={handlePause}>
-        {isPaused ? 'Resume' : 'Pause'}
-      </button>
+
 
 
       <label htmlFor="pageJump">Jump to a page</label>
       <input type="number" name="pageJump" placeholder="Search for a page" onChange={handlePageIndex} />
       <button type="button" onClick={() => scrollToPage(pageIndex)} className="btnJumpToIndex">Jump</button>
 
-      <div ref={pagesContainerRef} className="pdf-pages-container"></div>
+      {/* <div ref={pagesContainerRef} className="pdf-pages-container"></div> */}
+      {loading ? <p>Loading PDF...</p> : <div ref={pagesContainerRef} className="pdf-pages-container"></div>}
     </div>
   );
 };

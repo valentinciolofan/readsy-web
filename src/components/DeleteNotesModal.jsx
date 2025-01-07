@@ -97,15 +97,17 @@ const DeleteNotesModal = ({ deleteMode, deleteNotes, handleDeleteMode, handleAdd
   // Delete files
   const handleDeleteFiles = async () => {
     const fileIds = deleteNotes;
-
+   
+  
     try {
       // Wait for dispatch to complete
       const result = await dispatch(deleteFiles({ fileIds, userId: user.uid})).unwrap();
-      // Turn off the delete mode
-      handleDeleteMode();
 
-      // Close the delete modal
-      setShowModal(false);
+      // Turn off the delete mode
+       handleDeleteMode();
+
+       // Close the delete modal
+       setShowModal(false);
 
     } catch (error) {
       console.error('Failed to delete notes:', error);

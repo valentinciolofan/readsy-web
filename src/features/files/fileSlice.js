@@ -34,7 +34,7 @@ const filesSlice = createSlice({
         state.fetched = false; // Set fetched flag to false
       })
       .addCase(fetchFiles.fulfilled, (state, action) => {
-        state.loading = false; 
+        state.loading = false;
         state.files = action.payload; // Replace state with fetched files
         state.fetched = true; // Set fetched flag to true
       })
@@ -50,9 +50,9 @@ const filesSlice = createSlice({
         state.error = null; // Reset errors
       })
       .addCase(deleteFiles.fulfilled, (state, action) => {
-        state.isDeleting = false; // End deletion
-        // Remove deleted files from state
+        console.log(action.payload, 'this is the payload');
         state.files = state.files.filter((file) => !action.payload.includes(file.id));
+        state.isDeleting = false; // End deletion
       })
       .addCase(deleteFiles.rejected, (state, action) => {
         state.isDeleting = false; // End deletion

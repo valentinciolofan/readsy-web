@@ -47,6 +47,7 @@ const notesSlice = createSlice({
                 }
             })
             .addCase(deleteUserNotes.fulfilled, (state, action) => {
+                console.log(action.payload, 'this is the notes payload');
                 state.userNotes = state.userNotes.filter(note => !action.payload.includes(note.id));
                 state.isDeleting = true;
             });
