@@ -285,6 +285,9 @@ const PdfViewer = () => {
         handlePause={handlePause}
         ttsStatus={ttsStatus}
         isPaused={isPaused}
+        totalPages={totalPages}
+        pageIndex={pageIndex}
+        handlePageIndex={handlePageIndex}
       />
       {/* <select onChange={handleVoiceChange}>
         {voices.map((voice, index) => (
@@ -298,9 +301,9 @@ const PdfViewer = () => {
 
 
 
-      <label htmlFor="pageJump">Jump to a page</label>
+      {/* <label htmlFor="pageJump">Jump to a page</label>
       <input type="number" name="pageJump" placeholder="Search for a page" onChange={handlePageIndex} />
-      <button type="button" onClick={() => scrollToPage(pageIndex)} className="btnJumpToIndex">Jump</button>
+      <button type="button" onClick={() => scrollToPage(pageIndex)} className="btnJumpToIndex">Jump</button> */}
 
       {/* <div ref={pagesContainerRef} className="pdf-pages-container"></div> */}
       {loading ? <p>Loading PDF...</p> : <div ref={pagesContainerRef} className="pdf-pages-container"></div>}

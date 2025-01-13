@@ -435,7 +435,7 @@ label.remember-me-label {
 .dashboard-all-uploaded-files {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(135px, 150px)); 
+    grid-template-rows: repeat(auto-fill, minmax(135px, 150px));
     grid-gap: 15px;
     overflow-y: auto;
     margin-top: 30px;
@@ -443,6 +443,7 @@ label.remember-me-label {
     padding-bottom: 250px;
     height: 90vh;
 }
+
 .dashboard-all-uploaded-files {
     opacity: 0;
     transform: scale(0.95);
@@ -464,10 +465,12 @@ label.remember-me-label {
     position: relative;
     text-wrap: wrap;
 }
+
 .book.placeholder-content {
     opacity: 1;
     animation: fadeOut 0.5s ease forwards;
 }
+
 .book.placeholder-content.unfetched {
     opacity: 0;
     animation: fadeIn 0.5s ease forwards;
@@ -1124,6 +1127,69 @@ p {
 /* PDF viewer style */
 .pdf-viewer {}
 
+.control-pdf-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.pdf-viewer .pdf-zoomOut,
+.pdf-zoomIn,
+.btnReadPDF,
+.btnPausePDF,
+.btnPdfPreviousPage,
+.btnPdfNextPage {
+    background: transparent;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btnReadPDF, .btnPausePDF {
+    padding: 0px 10px;
+}
+.current-page-index-container {
+    background-color: #2D2D2D;
+    display: flex;
+    align-items: center;
+    padding: 0px 10px;
+}
+.increase-decrease-viewer, .show-page-index {
+    display: flex;
+    justify-content: center;
+}
+
+.pdf-zoomOut,
+.btnPdfPreviousPage {
+    border-radius: 4px 0px 0px 4px !important;
+}
+
+.pdf-zoomIn,
+.btnPdfNextPage {
+    border-radius: 0px 4px 4px 0px;
+}
+
+.show-current-page-index {
+    background-color: #909090;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    width: 30px;
+    text-align: center;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.current-pdf-scale {
+    color: #ffffff;
+    background-color: #2d2d2d;
+    display: flex;
+    align-items: center;
+    padding: 0px 10px;
+}
+
 .highlight {
     background-color: yellow;
     opacity: 0.5;
@@ -1372,11 +1438,13 @@ p {
         opacity: 0;
         transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
     }
 }
+
 @keyframes shimmer {
     0% {
         background-position: -200% 0;
