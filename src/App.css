@@ -1125,12 +1125,13 @@ p {
 }
 
 /* PDF viewer style */
-.pdf-viewer {}
-
 .control-pdf-buttons {
     display: flex;
     justify-content: center;
+    padding: 10px 20px;
     gap: 20px;
+    z-index: 10;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 .pdf-viewer .pdf-zoomOut,
 .pdf-zoomIn,
@@ -1139,7 +1140,7 @@ p {
 .btnPdfPreviousPage,
 .btnPdfNextPage {
     background: transparent;
-    border: 1px solid #ffffff;
+    border: 1px solid #2d2d2d;
     color: #ffffff;
     border-radius: 4px;
     cursor: pointer;
@@ -1152,6 +1153,7 @@ p {
     display: flex;
     align-items: center;
     padding: 0px 10px;
+    gap: 10px;
 }
 .increase-decrease-viewer, .show-page-index {
     display: flex;

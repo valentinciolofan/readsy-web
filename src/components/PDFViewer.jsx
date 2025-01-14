@@ -26,7 +26,7 @@ const PdfViewer = () => {
   const [loading, setLoading] = useState(true);
   const [stopRendering, setStopRendering] = useState(false);
   const [selectedVoice, setSelectedVoice] = useState(null);
-  const [pageIndex, setPageIndex] = useState(null);
+  const [pageIndex, setPageIndex] = useState(1);
   const location = useLocation();
 
   const { pdfUrl } = location.state;
@@ -61,7 +61,39 @@ const PdfViewer = () => {
     if (pdfUrl) {
       loadPDF(pdfUrl);
     }
+
+  
   }, [pdfUrl]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const onScroll = () => {
+      const pageElements = document.querySelectorAll('[data-page-index]');
+      let closestPage = null;
+      let closestDistance = Infinity;
+
+      pageElements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const distance = Math.abs(rect.top);
+
+        if (distance < closestDistance) {
+          closestPage = parseInt(el.getAttribute('data-page-index'), 10);
+          closestDistance = distance;
+        }
+      });
+
+      if (closestPage !== null) {
+        setPageIndex(closestPage);
+      }
+    };
+
+    pagesContainerRef.current.addEventListener('scroll', onScroll);
+
+    return () => {
+      pagesContainerRef.current.removeEventListener('scroll', onScroll);
+    };
+  }, [loading])
 
 
   // Load voices on component mount
@@ -102,7 +134,7 @@ const PdfViewer = () => {
       }
 
       const pdfLoader = document.createElement('div');
-      pdfLoader.setAttribute("id", i);
+      pdfLoader.setAttribute("data-page-index", i);
       pdfLoader.className = 'pdf-loader';
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
@@ -231,7 +263,7 @@ const PdfViewer = () => {
 
   // This function will scroll smoothly to the target element
   const scrollToPage = (index) => {
-    const target = document.getElementById(index);
+    const target = document.querySelector(`[data-page-index="${index}"]`);
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
     }
@@ -260,7 +292,7 @@ const PdfViewer = () => {
   };
   // Handle Zoom In
   const handleZoomIn = () => {
-    const newScale = scalePdf + 0.2;
+    const newScale = scalePdf + 0.25;
     setScalePdf(newScale);
     setStopRendering(true);
     renderPages(pdfDoc, totalPages, newScale);
@@ -268,7 +300,7 @@ const PdfViewer = () => {
 
   // Handle Zoom Out
   const handleZoomOut = () => {
-    const newScale = Math.max(0.5, scalePdf - 0.2);
+    const newScale = Math.max(0.5, scalePdf - 0.25);
     setScalePdf(newScale);
     setStopRendering(true);
     renderPages(pdfDoc, totalPages, newScale);
@@ -287,6 +319,8 @@ const PdfViewer = () => {
         isPaused={isPaused}
         totalPages={totalPages}
         pageIndex={pageIndex}
+        setPageIndex={setPageIndex}
+        scrollToPage={scrollToPage}
         handlePageIndex={handlePageIndex}
       />
       {/* <select onChange={handleVoiceChange}>
